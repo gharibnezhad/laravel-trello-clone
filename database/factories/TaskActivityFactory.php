@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\TaskList;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskActivity>

@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Task;
 use App\Models\TaskActivity;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use User;
 
 class TaskActivitySeeder extends Seeder
 {

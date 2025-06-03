@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Board;
-use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskActivity;
 use App\Models\TaskList;
-use App\Models\User;
+use Board;
 use Illuminate\Database\Seeder;
+use Models\Project;
+use User;
 
 class DemoProjectSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class DemoProjectSeeder extends Seeder
 
         $project=Project::factory()->create();
 
-        $project->users()->attach($user->id,['role'=>'admin']);
+        $project->users()->attach($user->id,['role'=>'panel']);
 
         $boards = Board::factory(3)->for($project)->create();
 

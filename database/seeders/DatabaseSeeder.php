@@ -4,9 +4,11 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Web\User\Database\Seeder\UserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
+    public static $seeders=[];
     /**
      * Seed the application's database.
      *
@@ -14,12 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       $this->call([
-           UserSeeder::class,
-           ProjectSeeder::class,
-           BoardSeeder::class,
-           TaskSeeder::class,
-           TaskActivitySeeder::class,
-       ]);
+        foreach (self::$seeders as $seeder){
+            $this->call($seeder);
+        }
     }
 }

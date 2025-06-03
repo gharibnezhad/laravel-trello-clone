@@ -1,0 +1,41 @@
+<?php
+
+namespace Web\Board\Providers;
+
+use Database\Seeders\DatabaseSeeder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\ServiceProvider;
+use Web\Board\Database\Seeder\BoardSeeder;
+
+class BoardServiceProvider extends ServiceProvider
+{
+
+    public function register()
+    {
+        $this->loadRoutesFrom(__DIR__.'/../Routes/board-routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadViewsFrom(__DIR__.'/../Resources/Views','Board');
+        $this->loadJsonTranslationsFrom(__DIR__.'/../Resources/lang');
+
+        DatabaseSeeder::$seeders[] = BoardSeeder::class;
+    }
+
+    public function boot()
+    {
+        Factory::guessFactoryNamesUsing(function ($modelName) {
+            if (str_starts_with($modelName, 'Web\\Project\\')) {
+                return 'Web\\Board\\Database\\Factories\\' . class_basename($modelName) . 'Factory';
+            }
+
+            return 'Database\\Factories\\' . class_basename($modelName) . 'Factory';
+        });
+
+        config()->set('sidebar.items.Boards',[
+            'icon' => 'i-articles',
+            'title' => 'بردها',
+            'url' => route('boards.index')
+        ]);
+
+
+    }
+}

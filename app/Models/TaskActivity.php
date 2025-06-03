@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use User;
 
 class TaskActivity extends Model
 {
@@ -11,7 +12,7 @@ class TaskActivity extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\Web\User\Models\User::class);
     }
 
     public function task()

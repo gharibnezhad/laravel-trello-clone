@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fa',
 
     /*
     |--------------------------------------------------------------------------
@@ -182,6 +182,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
@@ -194,6 +195,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        \Web\User\Providers\UserServiceProvider::class,
+        \Web\Category\Providers\CategoryServiceProvider::class,
+        \Web\Project\Providers\ProjectServiceProvider::class,
+        \Web\Dashboard\Providers\DashboardServiceProvider::class,
+        \Web\Board\Providers\BoardServiceProvider::class,
+
 
     ],
 
