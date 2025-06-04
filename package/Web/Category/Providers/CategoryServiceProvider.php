@@ -6,6 +6,8 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Web\Category\Database\Seeder\CategorySeeder;
+use Web\Category\Interfaces\CategoryInterface;
+use Web\Category\Repositories\CategoryRepository;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -22,8 +24,8 @@ class CategoryServiceProvider extends ServiceProvider
             }
             return 'Database\\Factories\\' . class_basename($modelName) . 'Factory';
         });
-
         DatabaseSeeder::$seeders[] = CategorySeeder::class;
+        $this->app->bind(CategoryInterface::class,CategoryRepository::class);
     }
 
     public function boot()

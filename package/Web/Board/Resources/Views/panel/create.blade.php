@@ -4,12 +4,12 @@
 @endsection
 @section('content')
     <div class="main-content padding-0">
-        <p class="box__title">ایجاد پروژه جدید</p>
+        <p class="box__title">ایجاد برد جدید</p>
         <div class="row no-gutters bg-white">
             <div class="col-12">
                 <form action="{{route('boards.store')}}" method="post" class="padding-30">
                     @csrf
-                    <input type="text" name="name"  class="text" placeholder="نام پروژه" required>
+                    <input type="text" name="name"  class="text" placeholder="نام برد" required>
                     <select name="project_id" required>
                         <option value="">انتخاب پروژه</option>
                         @foreach($projects as $project)
@@ -27,7 +27,7 @@
                     </select>
                     <input type="number" name="order"  class="text" placeholder="ترتیب نمایش" required>
 
-                    <button class="btn btn-webamooz_net">ایجاد پروژه</button>
+                    <button class="btn btn-webamooz_net">ایجاد برد</button>
                 </form>
             </div>
         </div>

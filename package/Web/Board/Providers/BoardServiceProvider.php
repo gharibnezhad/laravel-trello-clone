@@ -6,6 +6,8 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Web\Board\Database\Seeder\BoardSeeder;
+use Web\Board\Interfaces\BoardInterface;
+use Web\Board\Repositories\BoardRepositories;
 
 class BoardServiceProvider extends ServiceProvider
 {
@@ -16,8 +18,8 @@ class BoardServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
         $this->loadViewsFrom(__DIR__.'/../Resources/Views','Board');
         $this->loadJsonTranslationsFrom(__DIR__.'/../Resources/lang');
-
         DatabaseSeeder::$seeders[] = BoardSeeder::class;
+        $this->app->bind(BoardInterface::class,BoardRepositories::class);
     }
 
     public function boot()

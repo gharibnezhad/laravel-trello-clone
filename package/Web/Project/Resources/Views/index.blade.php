@@ -40,7 +40,10 @@
                     <th>نام انگلیسی</th>
                     <th>دسته بندی</th>
                     <th>مالک پروژه</th>
+                    <th>تعداد اعضا</th>
+                    <th>اضافه کردن اعضا</th>
                     <th>توضیجات</th>
+                    <th>عملیات</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,8 +56,19 @@
                         <td>
                         {{ $project->users->first() ? $project->users->first()->name : '-' }}
                         </td>
+                        <td>---</td>
+                        <td><a href="" class="item-answer mlg-15" title="اضافه کردن اعضا"></a></td>
                         <td>{{$project->description}}</td>
+                        <td>
+                            <a href="{{route('projects.destroy',$project->id)}}" class="item-delete mlg-15" title="حذف"></a>
+                            <a href="" class="item-reject mlg-15" title="رد"></a>
+                            <a href="" class="item-lock mlg-15" title="قفل دوره"></a>
+                            <a href="" target="_blank" class="item-eye mlg-15" title="مشاهده"></a>
+                            <a href="" class="item-confirm mlg-15" title="تایید"></a>
+                            <a href="{{route('projects.edit',$project->id)}}" class="item-edit " title="ویرایش"></a>
+                        </td>
                     </tr>
+
                 @endforeach
 
                 </tbody>

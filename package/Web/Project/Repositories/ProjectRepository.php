@@ -2,7 +2,9 @@
 
 namespace Web\Project\Repositories;
 
+use Web\Project\Interfaces\ProjectInterface;
 use Web\Project\Models\Project;
+use Web\Project\Notifications\ProjectCreatedNotification;
 
 class ProjectRepository implements ProjectInterface
 {
@@ -17,18 +19,20 @@ class ProjectRepository implements ProjectInterface
         return Project::all();
     }
 
-    public function store($request)
+    public function store($data)
     {
-        $user=auth()->user();
-        $project= Project::create([
-            "name" => $request->name,
-            "slug" => $request->slug,
-            "category_id" => $request->category_id,
-            "description" => $request->description,
-        ]);
+        return  Project::create($data);
+    }
 
-        $user->projects()->attach($project->id,['role'=>'viewer']);
+    public function update($data,$id)
+    {
+        $project=Project::findOrFail($id);
+        return $project->update($data);
+    }
 
-        return $project;
+    public function destroy($id)
+    {
+        $project = Project::findOrFail($id);
+        return $project->delete($id);
     }
 }

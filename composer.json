@@ -31,7 +31,8 @@
             "Web\\Project\\" : "package/Web/Project",
             "Web\\Category\\" : "package/Web/Category",
             "Web\\Dashboard\\" : "package/Web/Dashboard",
-            "Web\\Board\\" : "package/Web/Board"
+            "Web\\Board\\" : "package/Web/Board",
+            "Web\\Notification\\" : "package/Web/Notification"
         }
     },
     "autoload-dev": {

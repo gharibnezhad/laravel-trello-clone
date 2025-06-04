@@ -200,6 +200,7 @@ return [
         \Web\Project\Providers\ProjectServiceProvider::class,
         \Web\Dashboard\Providers\DashboardServiceProvider::class,
         \Web\Board\Providers\BoardServiceProvider::class,
+        \Web\Notification\Providers\NotificationServiceProvider::class,
 
 
     ],

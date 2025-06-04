@@ -2,6 +2,7 @@
 
 namespace Web\Board\Repositories;
 
+use Web\Board\Interfaces\BoardInterface;
 use Web\Board\Models\Board;
 
 class BoardRepositories implements BoardInterface
@@ -17,13 +18,22 @@ class BoardRepositories implements BoardInterface
        return Board::all();
     }
 
-    public function store($request)
+    public function store($data)
     {
-        return Board::create([
-            "name" => $request->name,
-            "project_id" => $request->project_id,
-            "visibility" => $request->visibility,
-            "order" => $request->order,
-        ]);
+        return Board::create($data);
+    }
+
+    public function update($data,$id)
+    {
+        $board = Board::findOrFail($id);
+
+        return $board->update($data);
+    }
+
+    public function destroy($id)
+    {
+        $board = Board::findOrFail($id);
+
+        return $board->destroy($id);
     }
 }
