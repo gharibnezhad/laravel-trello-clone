@@ -201,6 +201,7 @@ return [
         \Web\Dashboard\Providers\DashboardServiceProvider::class,
         \Web\Board\Providers\BoardServiceProvider::class,
         \Web\Notification\Providers\NotificationServiceProvider::class,
+        \Web\Export\Provider\ExportServiceProvider::class,
 
 
     ],

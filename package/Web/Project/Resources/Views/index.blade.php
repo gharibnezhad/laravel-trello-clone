@@ -43,6 +43,8 @@
                     <th>تعداد اعضا</th>
                     <th>اضافه کردن اعضا</th>
                     <th>توضیجات</th>
+                    <th>دریافت خروجی</th>
+                    <th> pdf دریافت خروجی</th>
                     <th>عملیات</th>
                 </tr>
                 </thead>
@@ -59,6 +61,21 @@
                         <td>---</td>
                         <td><a href="" class="item-answer mlg-15" title="اضافه کردن اعضا"></a></td>
                         <td>{{$project->description}}</td>
+                        <form id="jsonExportForm-{{ $project->id }}" action="{{ route('projects.exportJson', $project->id) }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+
+                        <td>
+                            <button class="btn all-confirm-btn" onclick="exportJson({{ $project->id }})">خروجی JSON</button>
+                        </td>
+
+                        <form id="jsonExportFormPdf-{{ $project->id }}" action="{{ route('projects.exportPdf', $project->id) }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+
+                        <td>
+                            <button class="btn all-confirm-btn" onclick="exportPdf({{ $project->id }})">خروجی pdf</button>
+                        </td>
                         <td>
                             <a href="{{route('projects.destroy',$project->id)}}" class="item-delete mlg-15" title="حذف"></a>
                             <a href="" class="item-reject mlg-15" title="رد"></a>
@@ -77,3 +94,4 @@
     </div>
 
 @endsection
+

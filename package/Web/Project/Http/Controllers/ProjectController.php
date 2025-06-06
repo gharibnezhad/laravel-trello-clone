@@ -76,4 +76,14 @@ class ProjectController extends Controller
     {
 
     }
+
+    public function exportJson($id)
+    {
+       return $this->projectService->exportJson($id);
+    }
+
+    public function exportPdf($id)
+    {
+        return $this->projectService->exportPdf($id);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Web\Project\Models;
 
-use Board;
+use Web\Board\Models\Board;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Web\Category\Models\Category;

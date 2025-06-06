@@ -2,7 +2,7 @@
 
 namespace Web\Board\Services;
 
-use Web\Board\Interfaces\BoardInterface;
+use Web\Board\Contracts\BoardInterface;
 
 class BoardService
 {

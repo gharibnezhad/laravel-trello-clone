@@ -1,6 +1,6 @@
 <?php
 
-namespace Web\Category\Interfaces;
+namespace Web\Category\Contracts;
 
 interface CategoryInterface
 {

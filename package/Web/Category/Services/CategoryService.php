@@ -2,7 +2,7 @@
 
 namespace Web\Category\Services;
 
-use Web\Category\Interfaces\CategoryInterface;
+use Web\Category\Contracts\CategoryInterface;
 
 class CategoryService
 {

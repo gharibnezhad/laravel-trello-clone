@@ -211,3 +211,18 @@ $('.discounts #discounts-field-2').on('click', function (e) {
 $('.discounts #discounts-field-1').on('click', function (e) {
     $('.discounts .dropdown-select').removeClass('is-active')
 });
+function exportJson(projectId){
+    if (confirm("آیا از دریافت خروجی json این پروژه اطمینان دارید؟")){
+        document.getElementById('jsonExportForm-' + projectId).submit();
+
+    }
+}
+
+function exportPdf(projectId){
+    if (confirm("آیا از دریافت خروجی pdf این پروژه اطمینان دارید؟")){
+        document.getElementById('jsonExportFormPdf-' + projectId).submit();
+
+    }
+}
+
+

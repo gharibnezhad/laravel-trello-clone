@@ -1,6 +1,6 @@
 <?php
 
-namespace Web\Board\Interfaces;
+namespace Web\Board\Contracts;
 
 interface BoardInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Web\Project\Interfaces;
+namespace Web\Project\Contracts;
 
 interface ProjectInterface
 {

@@ -4,7 +4,7 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Web\Project\Database\Seeder\ProjectSeeder;
-use Web\Project\Interfaces\ProjectInterface;
+use Web\Project\Contracts\ProjectInterface;
 use Web\Project\Repositories\ProjectRepository;
 
 class ProjectServiceProvider extends ServiceProvider

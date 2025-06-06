@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Board;
+use Web\Board\Models\Board;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class TaskList extends Model
         return $this->belongsTo(Board::class);
     }
 
-    public function Tasks()
+    public function tasks()
     {
         return $this->hasMany(Task::class);
     }

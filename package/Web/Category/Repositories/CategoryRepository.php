@@ -2,7 +2,7 @@
 
 namespace Web\Category\Repositories;
 
-use Web\Category\Interfaces\CategoryInterface;
+use Web\Category\Contracts\CategoryInterface;
 use Web\Category\Models\Category;
 
 class CategoryRepository implements CategoryInterface

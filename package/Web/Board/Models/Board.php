@@ -4,6 +4,7 @@ namespace Web\Board\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Web\Project\Models\Project;
+use App\Models\TaskList;
 
 class Board extends Model
 {
@@ -31,7 +32,7 @@ class Board extends Model
 
     public function taskLists()
     {
-        return $this->hasMany(\App\Models\TaskList::class);
+        return $this->hasMany(TaskList::class);
     }
 
     public static function newFactory()

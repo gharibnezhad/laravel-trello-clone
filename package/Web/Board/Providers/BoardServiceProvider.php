@@ -6,7 +6,7 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Web\Board\Database\Seeder\BoardSeeder;
-use Web\Board\Interfaces\BoardInterface;
+use Web\Board\Contracts\BoardInterface;
 use Web\Board\Repositories\BoardRepositories;
 
 class BoardServiceProvider extends ServiceProvider

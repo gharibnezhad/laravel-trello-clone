@@ -2,7 +2,7 @@
 
 namespace Web\Board\Repositories;
 
-use Web\Board\Interfaces\BoardInterface;
+use Web\Board\Contracts\BoardInterface;
 use Web\Board\Models\Board;
 
 class BoardRepositories implements BoardInterface

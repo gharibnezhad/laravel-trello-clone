@@ -2,7 +2,7 @@
 
 namespace Web\Project\Repositories;
 
-use Web\Project\Interfaces\ProjectInterface;
+use Web\Project\Contracts\ProjectInterface;
 use Web\Project\Models\Project;
 use Web\Project\Notifications\ProjectCreatedNotification;
 
@@ -34,5 +34,13 @@ class ProjectRepository implements ProjectInterface
     {
         $project = Project::findOrFail($id);
         return $project->delete($id);
+    }
+
+    public function findWithBoardsAndTasks($id)
+    {
+        $project = Project::with('boards.taskLists.tasks')
+            ->findOrFail($id);
+
+        return $project;
     }
 }

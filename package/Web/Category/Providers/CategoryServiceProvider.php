@@ -6,7 +6,7 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Web\Category\Database\Seeder\CategorySeeder;
-use Web\Category\Interfaces\CategoryInterface;
+use Web\Category\Contracts\CategoryInterface;
 use Web\Category\Repositories\CategoryRepository;
 
 class CategoryServiceProvider extends ServiceProvider
