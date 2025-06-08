@@ -2,9 +2,9 @@
 
 namespace Web\Board\Database\Seeder;
 
-use App\Models\TaskList;
-use Web\Board\Models\Board;
 use Illuminate\Database\Seeder;
+use Models\TaskList;
+use Web\Board\Models\Board;
 
 class BoardSeeder extends Seeder
 {

@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\TaskList;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use User;
+use Web\TaskList\Models\TaskList;
+use Web\User\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskActivity>

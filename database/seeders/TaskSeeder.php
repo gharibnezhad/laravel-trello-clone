@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
-use App\Models\TaskList;
 use Illuminate\Database\Seeder;
+use Models\TaskList;
 use User;
 
 class TaskSeeder extends Seeder

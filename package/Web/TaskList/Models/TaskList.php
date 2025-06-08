@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace Web\TaskList\Models;
 
-use Web\Board\Models\Board;
+use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Web\Board\Models\Board;
 
 class TaskList extends Model
 {
@@ -21,4 +22,6 @@ class TaskList extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+
 }

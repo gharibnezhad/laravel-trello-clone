@@ -9,16 +9,17 @@
             <div class="col-12">
                 <form action="{{route('projects.store')}}" method="post" class="padding-30">
                     @csrf
-                    <input type="text" name="name"  class="text" placeholder="نام پروژه" required>
-                    <input type="text" name="slug" class="text text-left " placeholder="نام انگلیسی پروژه" required>
-                    <select name="category_id" required>
+                    <x-input type="text" name="name"  class="text" placeholder="نام پروژه" />
+                    <x-input type="text" name="slug" class="text text-left " placeholder="نام انگلیسی پروژه"/>
+                    <x-select name="category_id" >
                         <option value="">دسته بندی</option>
                         @foreach($categories as $category)
 
                         <option value="{{$category->id}}">{{$category->title}}</option>
                         @endforeach
-                    </select>
-                    <textarea name="description" placeholder="توضیحات پروژه" class="text h"></textarea>
+                    </x-select>
+                    <x-textarea name="description" placeholder="توضیحات پروژه" class="text h" value=""></x-textarea>
+
                     <button class="btn btn-webamooz_net">ایجاد پروژه</button>
                 </form>
             </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Web\Category\Repositories\CategoryRepository;
 use Web\Notification\Services\NotificationService;
+use Web\Project\Http\Requests\CreateProjectRequest;
 use Web\Project\Repositories\ProjectRepository;
 use Web\Project\Services\ProjectService;
 
@@ -44,7 +45,7 @@ class ProjectController extends Controller
         return view('Project::create',compact('categories'));
     }
 
-    public function store(Request $request,NotificationService $notifier)
+    public function store(CreateProjectRequest $request,NotificationService $notifier)
     {
         $this->projectService->storeProject($request,$notifier);
 

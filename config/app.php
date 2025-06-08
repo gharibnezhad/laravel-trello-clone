@@ -202,6 +202,7 @@ return [
         \Web\Board\Providers\BoardServiceProvider::class,
         \Web\Notification\Providers\NotificationServiceProvider::class,
         \Web\Export\Provider\ExportServiceProvider::class,
+        \Web\TaskList\Providers\TaskListServiceProvider::class,
 
 
     ],

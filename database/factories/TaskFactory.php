@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\TaskList;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Models\TaskList;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>

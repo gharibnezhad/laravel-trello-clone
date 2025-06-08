@@ -4,10 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Task;
 use App\Models\TaskActivity;
-use App\Models\TaskList;
 use Board;
 use Illuminate\Database\Seeder;
 use Models\Project;
+use Models\TaskList;
 use User;
 
 class DemoProjectSeeder extends Seeder

@@ -36,4 +36,9 @@ class BoardRepositories implements BoardInterface
 
         return $board->destroy($id);
     }
+
+    public function findBoardsWithNameAndId()
+    {
+        return Board::query()->pluck('name','id');
+    }
 }
