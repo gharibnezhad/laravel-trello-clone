@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Task;
 use App\Models\TaskActivity;
 use Illuminate\Database\Seeder;
 use User;
+use Web\Task\Models\Task;
 
 class TaskActivitySeeder extends Seeder
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Seeders;
+namespace Web\Task\Database\Seeder;
 
-use App\Models\Task;
 use Illuminate\Database\Seeder;
-use Models\TaskList;
-use User;
+use Web\Task\Models\Task;
+use Web\TaskList\Models\TaskList;
+use Web\User\Models\User;
 
 class TaskSeeder extends Seeder
 {

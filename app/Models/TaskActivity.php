@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use User;
+use Web\Task\Models\Task;
 
 class TaskActivity extends Model
 {

@@ -203,6 +203,8 @@ return [
         \Web\Notification\Providers\NotificationServiceProvider::class,
         \Web\Export\Provider\ExportServiceProvider::class,
         \Web\TaskList\Providers\TaskListServiceProvider::class,
+        \Web\Task\Providers\TaskServiceProvider::class,
+
 
 
     ],

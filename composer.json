@@ -35,7 +35,8 @@
             "Web\\Board\\" : "package/Web/Board",
             "Web\\Notification\\" : "package/Web/Notification",
             "Web\\Export\\" : "package/Web/Export",
-            "Web\\TaskList\\" : "package/Web/TaskList"
+            "Web\\TaskList\\" : "package/Web/TaskList",
+            "Web\\Task\\" : "package/Web/Task"
         }
     },
     "autoload-dev": {

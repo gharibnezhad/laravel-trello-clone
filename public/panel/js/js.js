@@ -46,13 +46,31 @@ function create_custom_dropdowns() {
             var selected = $(this).find('option:selected');
             dropdown.find('.current').html(selected.data('display-text') || selected.text());
             options.each(function (j, o) {
-                var display = $(o).data('display-text') || '';
-                dropdown.find('ul').append('<li class="option ' + ($(o).is(':selected') ? 'selected' : '') + '" data-value="' + $(o).val() + '" data-display-text="' + display + '">' + $(o).text() + '</li>');
+                var val = $(o).val();
+                var text = $(o).text().trim();
+
+
+                if (val !== '' || text !== '') {
+                    var display = $(o).data('display-text') || '';
+                    dropdown.find('ul').append(
+                        '<li class="option ' +
+                        ($(o).is(':selected') ? 'selected' : '') +
+                        '" data-value="' + val +
+                        '" data-display-text="' + display + '">' +
+                        text +
+                        '</li>'
+                    );
+                }
             });
+
+        }
+    });
+    $('.dropdown-select ul').each(function () {
+        if ($(this).prev('.dd-search').length === 0) {
+            $(this).before('<div class="dd-search"><input autocomplete="off" onkeyup="filter()" class="dd-searchbox" type="text"></div>');
         }
     });
 
-    $('.dropdown-select ul').before('<div class="dd-search"><input id="txtSearchValue" autocomplete="off" onkeyup="filter()" class="dd-searchbox" type="text"></div>');
 }
 
 $(document).on('click', '.dropdown-select', function (event) {

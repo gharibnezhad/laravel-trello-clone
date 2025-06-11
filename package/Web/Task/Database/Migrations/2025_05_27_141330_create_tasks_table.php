@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime('due_time')->nullable();
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->enum('status', ['todo', 'in_progress', 'done'])->default('todo');
+            $table->integer('order')->default(0);
             $table->foreignId('task_list_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

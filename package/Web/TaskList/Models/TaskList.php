@@ -2,10 +2,10 @@
 
 namespace Web\TaskList\Models;
 
-use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Web\Board\Models\Board;
+use Web\Task\Models\Task;
 
 class TaskList extends Model
 {

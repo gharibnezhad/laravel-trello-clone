@@ -1,13 +1,11 @@
 <?php
 
-namespace Database\Factories;
+namespace Web\Task\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Models\TaskList;
+use Web\TaskList\Models\TaskList;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
- */
+
 class TaskFactory extends Factory
 {
     /**
