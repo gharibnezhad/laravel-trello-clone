@@ -3,20 +3,74 @@
 @section('content')
     <section class="lists-container">
 
-        <div class="list">
+        @foreach($uniqueTaskListNames as $taskListName)
+            <div class="list">
+                <h3 class="list-title">{{ $taskListName }}</h3>
+                <ul class="list-items" data-task-list-id="{{ $board->taskLists->where('name', $taskListName)->first()->id }}">
+                    @foreach($board->taskLists->where('name', $taskListName)->first()->tasks as $task)
+                        <li class="task-item" data-task-id="{{ $task->id }}">
+                            {{ $task->title }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endforeach
 
-            <h3 class="list-title">Tasks to Do</h3>
 
-            <ul class="list-items">
-                <li>Complete mock-up for client website</li>
-            </ul>
 
-            <button class="add-card-btn btn">Add a card</button>
+        <form action="{{route('singleBoardAddTask',$board->id)}}" method="post" class="padding-30">
+                @csrf
+                <input type="text" name="title" class="text" placeholder="عنوان" >
+                <br><br>
+                    <x-select name="taskList">
+                        <option  value="">انتخاب تسک لیست</option>
+                        @foreach($board->taskLists as $taskList)
+                            <option  value="{{ $taskList->id }}">{{ $taskList->name }}</option>
+                        @endforeach
+                    </x-select>
 
-        </div>
-
-        <button class="add-list-btn btn">Add a list</button>
-
+                <br><br>
+                <button class="add-list-btn btn">Add a task</button>
+            </form>
     </section>
 @endsection
+@section('content')
+    <!-- محتوا -->
+@endsection
+
+@push('scripts') {{-- یا @section('scripts') اگر در مستر yield کرده‌ای --}}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+    document.querySelectorAll('.list-items').forEach(list => {
+        new Sortable(list, {
+            group: 'shared',
+            animation: 150,
+            onAdd: function (evt) {
+                const taskId = evt.item.dataset.taskId;
+                const newTaskListId = evt.to.dataset.taskListId;
+
+                fetch("{{ route('updateTaskListId') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        task_id: taskId,
+                        new_task_list_id: newTaskListId
+                    })
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                    }).catch(error => {
+                    alert('خطا در به‌روزرسانی');
+                    console.error(error);
+                });
+            }
+        });
+    });
+</script>
+@endpush
+
 

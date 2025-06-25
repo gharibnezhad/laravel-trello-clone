@@ -204,6 +204,7 @@ return [
         \Web\Export\Provider\ExportServiceProvider::class,
         \Web\TaskList\Providers\TaskListServiceProvider::class,
         \Web\Task\Providers\TaskServiceProvider::class,
+        \Web\Front\Providers\FrontServiceProvider::class,
 
 
 

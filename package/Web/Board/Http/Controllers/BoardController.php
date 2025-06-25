@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Web\Board\Repositories\BoardRepositories;
 use Web\Board\Services\BoardService;
 use Web\Project\Repositories\ProjectRepository;
+use Web\Task\Models\Task;
 
 class BoardController extends Controller
 {
@@ -59,5 +60,27 @@ class BoardController extends Controller
     {
         $this->boardService->deleteBoard($id);
         return redirect()->route('boards.index');
+    }
+
+    public function singleBoardAddTask(Request $request,$id)
+    {
+        $this->boardService->addTask($request,$id);
+
+        return redirect()->back();
+    }
+
+    public function updateTaskListId(Request $request)
+    {
+        $request->validate([
+            'task_id' => 'required|integer|exists:tasks,id',
+            'new_task_list_id' => 'required|integer|exists:task_lists,id',
+        ]);
+
+        $task = Task::findOrFail($request->task_id);
+        $task->update([
+            'task_list_id' => $request->new_task_list_id,
+        ]);
+
+        return response()->json(['message' => 'تسک با موفقیت منتقل شد.']);
     }
 }

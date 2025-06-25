@@ -3,15 +3,18 @@
 namespace Web\Board\Services;
 
 use Web\Board\Contracts\BoardInterface;
+use Web\Task\Repositories\TaskRepository;
 
 class BoardService
 {
 
     protected $boardRepo;
+    protected $TaskRepo;
 
-    public function __construct(BoardInterface $boardRepo)
+    public function __construct(BoardInterface $boardRepo, TaskRepository $TaskRepo)
     {
         $this->boardRepo = $boardRepo;
+        $this->TaskRepo = $TaskRepo;
     }
 
     public function storeBoard($request)
@@ -36,7 +39,17 @@ class BoardService
             "order" => $request->filled('order') ? $request->order : $board->order,
         ];
 
-        return $this->boardRepo->update($data,$id);
+        return $this->boardRepo->update($data, $id);
+    }
+
+    public function addTask($request, $id)
+    {
+        $board = $this->boardRepo->findById($id);
+
+         $this->TaskRepo->store([
+            "title" => $request->title,
+            "task_list_id" => $request->taskList
+        ]);
     }
 
     public function deleteBoard($id)

@@ -2,8 +2,9 @@
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['middleware'=>'web','namespace'=> 'Web\Front\Http\Controllers'],function ($router){
+Route::group(["namespace"=> 'Web\Front\Http\Controllers','middleware'=>'web'],function ($router){
 
-    $router->get('/','FrontController');
+    $router->get('/','FrontController@index');
+    $router->get('/singleBoard/{id}','FrontController@singleBoard')->name('singleBoard');
 
 });
