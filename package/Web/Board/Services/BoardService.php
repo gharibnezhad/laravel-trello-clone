@@ -3,6 +3,7 @@
 namespace Web\Board\Services;
 
 use Web\Board\Contracts\BoardInterface;
+use Web\Task\Models\Task;
 use Web\Task\Repositories\TaskRepository;
 
 class BoardService
@@ -44,12 +45,23 @@ class BoardService
 
     public function addTask($request, $id)
     {
-        $board = $this->boardRepo->findById($id);
-
-         $this->TaskRepo->store([
-            "title" => $request->title,
-            "task_list_id" => $request->taskList
+        $this->boardRepo->findById($id);
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'taskList' => 'required|exists:task_lists,id',
         ]);
+
+        $taskListId = $validated['taskList'];
+
+        $maxOrder = Task::where('task_list_id',$taskListId)->max('order');
+        $nextOrder = $maxOrder ? $maxOrder + 1 : 1 ;
+
+        $this->TaskRepo->store([
+            "title" => $validated['title'],
+            "task_list_id" => $taskListId,
+            "order" => $nextOrder
+        ]);
+
     }
 
     public function deleteBoard($id)

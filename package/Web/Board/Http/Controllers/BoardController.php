@@ -69,18 +69,26 @@ class BoardController extends Controller
         return redirect()->back();
     }
 
-    public function updateTaskListId(Request $request)
+    public function updateTaskOrder(Request $request)
     {
         $request->validate([
-            'task_id' => 'required|integer|exists:tasks,id',
-            'new_task_list_id' => 'required|integer|exists:task_lists,id',
+            'task_list_id' => 'required|integer|exists:task_lists,id',
+            'tasks' => 'required|array',
+            'tasks.*.id' => 'required|integer|exists:tasks,id',
+            'tasks.*.order' => 'required|integer|min:1',
         ]);
 
-        $task = Task::findOrFail($request->task_id);
-        $task->update([
-            'task_list_id' => $request->new_task_list_id,
-        ]);
+        $taskListId = $request->input('task_list_id');
+        $tasks = $request->input('tasks');
 
-        return response()->json(['message' => 'تسک با موفقیت منتقل شد.']);
+        foreach ($tasks as $taskData) {
+            Task::where('id', $taskData['id'])->update([
+                'task_list_id' => $taskListId,
+                'order' => $taskData['order']
+            ]);
+        }
+
+        return response()->json(['status' => 'success']);
+
     }
 }

@@ -46,31 +46,40 @@
         new Sortable(list, {
             group: 'shared',
             animation: 150,
-            onAdd: function (evt) {
-                const taskId = evt.item.dataset.taskId;
-                const newTaskListId = evt.to.dataset.taskListId;
+            onEnd: function (evt) {
+                const taskListElement = evt.to;
+                const taskListId = taskListElement.dataset.taskListId;
 
-                fetch("{{ route('updateTaskListId') }}", {
+                const tasks = Array.from(taskListElement.querySelectorAll('.task-item')).map((item, index) => {
+                    return {
+                        id: item.dataset.taskId,
+                        order: index + 1
+                    };
+                });
+
+
+                fetch("{{ route('updateTaskOrder') }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        task_id: taskId,
-                        new_task_list_id: newTaskListId
+                        task_list_id: taskListId,
+                        tasks: tasks
                     })
                 }).then(response => response.json())
                     .then(data => {
-                        console.log(data.message);
+                        console.log(data.status); // success
                     }).catch(error => {
-                    alert('خطا در به‌روزرسانی');
+                    alert('خطا در به‌روزرسانی ترتیب تسک‌ها');
                     console.error(error);
                 });
             }
         });
     });
 </script>
+
 @endpush
 
 
