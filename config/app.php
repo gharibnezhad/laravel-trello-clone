@@ -205,6 +205,8 @@ return [
         \Web\TaskList\Providers\TaskListServiceProvider::class,
         \Web\Task\Providers\TaskServiceProvider::class,
         \Web\Front\Providers\FrontServiceProvider::class,
+        \Web\Logging\Providers\LoggerServiceProvider::class,
+        \Web\Member\Providers\MemberServiceProvider::class,
 
 
 

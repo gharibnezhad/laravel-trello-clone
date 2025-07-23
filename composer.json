@@ -37,7 +37,9 @@
             "Web\\Export\\" : "package/Web/Export",
             "Web\\TaskList\\" : "package/Web/TaskList",
             "Web\\Task\\" : "package/Web/Task",
-            "Web\\Front\\" : "package/Web/Front"
+            "Web\\Front\\" : "package/Web/Front",
+            "Web\\Logging\\" : "package/Web/Logging",
+            "Web\\Member\\" : "package/Web/Member"
         }
     },
     "autoload-dev": {

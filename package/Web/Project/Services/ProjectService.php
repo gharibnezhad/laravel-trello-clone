@@ -7,6 +7,7 @@ use Web\Export\Contracts\PdfExporterInterface;
 use Web\Export\Exporters\ProjectToJsonExporter;
 use Web\Export\Services\ProjectExportService;
 use Web\Export\Services\ProjectToPdfExportService;
+use Web\Member\Services\MemberService;
 use Web\Project\Contracts\ProjectInterface;
 use Web\Project\Notifications\ProjectCreatedNotification;
 
@@ -17,14 +18,17 @@ class ProjectService
 
     protected $pdfExportService;
 
+    protected $memberService;
 
     public function __construct(ProjectInterface $projectRepo,
                                 JsonExporterInterface $exportService,
-                                PdfExporterInterface $pdfExportService)
+                                PdfExporterInterface $pdfExportService,
+                                MemberService $memberService)
     {
         $this->projectRepo = $projectRepo;
         $this->exportService = $exportService;
         $this->pdfExportService = $pdfExportService;
+        $this->memberService = $memberService;
     }
 
 
@@ -40,7 +44,7 @@ class ProjectService
             "description" => $request->description,
         ];
         $project = $this->projectRepo->store($data);
-        $user->projects()->attach($project->id,['role'=>'viewer']);
+        $user->projects()->attach($project->id,['role'=>'admin']);
 
         $notifier->send($user,new ProjectCreatedNotification($request));
 
@@ -82,6 +86,22 @@ class ProjectService
         $exportService = $this->pdfExportService;
 
         return $exportService->exportToPdf($project);
+    }
+
+    public function getProjectMembers($projectId)
+    {
+        return $this->memberService->getMember($projectId,'project');
+    }
+
+
+    public function addUserToProject($projectId,$userId)
+    {
+        return $this->memberService->addMember('project',$projectId,$userId);
+    }
+
+    public function removeUserToProject($projectId,$userId)
+    {
+        return $this->memberService->removeMember('project',$projectId,$userId);
     }
 
 }

@@ -8,6 +8,7 @@ use Web\Notification\Services\NotificationService;
 use Web\Project\Http\Requests\CreateProjectRequest;
 use Web\Project\Repositories\ProjectRepository;
 use Web\Project\Services\ProjectService;
+use Web\User\Models\User;
 
 
 class ProjectController extends Controller
@@ -34,7 +35,7 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        // todo display a product you must singleProduct.blade
+        // todo display a project you must singleProject.blade
         $project = $this->projectRepo->findById($id);
         return view('Project::show',compact('project'));
     }
@@ -47,6 +48,7 @@ class ProjectController extends Controller
 
     public function store(CreateProjectRequest $request,NotificationService $notifier)
     {
+        // todo creating a modular FileUploader
         $this->projectService->storeProject($request,$notifier);
 
         return redirect()->route('projects.index');
@@ -73,9 +75,32 @@ class ProjectController extends Controller
         return redirect()->route('projects.index');
     }
 
-    public function addMember()
+    public function members($projectId)
     {
+        $members = $this->projectService->getProjectMembers($projectId);
+        $project = $this->projectRepo->findById($projectId);
+        return view('Project::members.index',compact('members','project'));
+    }
 
+
+    public function createMemberToProject($projectId)
+    {
+        $project = $this->projectRepo->findById($projectId);
+        $users = User::all();
+
+        return view('Project::members.create',compact('project','users'));
+    }
+
+    public function addMemberToProject(Request $request,$projectId)
+    {
+        $this->projectService->addUserToProject($projectId,$request->user_id);
+        return redirect()->route('projects.index');
+    }
+
+    public function removeMemberToProject($projectId,$userId)
+    {
+        $this->projectService->removeUserToProject($projectId,$userId);
+        return redirect()->route('projects.index');
     }
 
     public function exportJson($id)
@@ -85,6 +110,8 @@ class ProjectController extends Controller
 
     public function exportPdf($id)
     {
+        // todo refactor this method for export pdf
         return $this->projectService->exportPdf($id);
     }
+
 }
