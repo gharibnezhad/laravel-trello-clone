@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Web\Task\Contracts\TaskInterface;
 use Web\Task\Database\Seeder\TaskSeeder;
+use Web\Task\Models\Task;
+use Web\Task\Observers\TaskObserver;
 use Web\Task\Repositories\TaskRepository;
 use Web\TaskList\Contracts\TaskListInterface;
 
@@ -39,5 +41,7 @@ class TaskServiceProvider extends ServiceProvider
             "title"=>"تسک ها",
             "url"=>route('tasks.index')
         ]);
+
+        Task::observe(TaskObserver::class);
     }
 }

@@ -8,18 +8,21 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Web\Task\Models\Task;
 
-class TaskCreated
+class TaskMoved
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(Task $task,$user)
+    public $task;
+
+    public $user;
+    public $oldValues;
+    public $newValues;
+    public function __construct(Task $task,$user,$oldValues,$newValues)
     {
-        //
+        $this->task = $task;
+        $this->user = $user;
+        $this->oldValues = $oldValues;
+        $this->newValues = $newValues;
     }
 
     /**

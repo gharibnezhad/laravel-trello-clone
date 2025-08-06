@@ -3,6 +3,7 @@
 namespace Web\Board\Services;
 
 use Web\Board\Contracts\BoardInterface;
+use Web\Task\Events\TaskCreated;
 use Web\Task\Models\Task;
 use Web\Task\Repositories\TaskRepository;
 
@@ -45,6 +46,7 @@ class BoardService
 
     public function addTask($request, $id)
     {
+
         $this->boardRepo->findById($id);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -56,12 +58,40 @@ class BoardService
         $maxOrder = Task::where('task_list_id',$taskListId)->max('order');
         $nextOrder = $maxOrder ? $maxOrder + 1 : 1 ;
 
-        $this->TaskRepo->store([
+       $task = $this->TaskRepo->store([
             "title" => $validated['title'],
             "task_list_id" => $taskListId,
             "order" => $nextOrder
         ]);
 
+        if (auth()->check()) {
+            $task->users()->attach(auth()->id()); // حالا که مدل ذخیره شده
+        }
+
+        return $task;
+    }
+
+    public function updateTaskOrder($request)
+    {
+        $request->validate([
+            'task_list_id' => 'required|integer|exists:task_lists,id',
+            'tasks' => 'required|array',
+            'tasks.*.id' => 'required|integer|exists:tasks,id',
+            'tasks.*.order' => 'required|integer|min:1',
+        ]);
+
+        $taskListId = $request->input('task_list_id');
+        $tasks = $request->input('tasks');
+
+        foreach ($tasks as $taskData) {
+            $task = Task::find($taskData['id']);
+               $task->task_list_id = $taskListId;
+               $task->order = $taskData['order'];
+
+               $task->save();
+        }
+
+        return $tasks;
     }
 
     public function deleteBoard($id)
