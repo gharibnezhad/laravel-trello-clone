@@ -15,7 +15,7 @@ class TaskListRepository implements TaskListInterface
 
     public function getAllTaskList()
     {
-        return TaskList::all();
+        return TaskList::paginate(5);
     }
 
     public function store(array $data)
@@ -32,6 +32,7 @@ class TaskListRepository implements TaskListInterface
 
     public function destroy($id)
     {
-        return TaskList::destroy($id);
+        $taskList = TaskList::findOrFail($id);
+        return $taskList->delete();
     }
 }

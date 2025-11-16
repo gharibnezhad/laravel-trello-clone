@@ -38,7 +38,7 @@
     <!-- محتوا -->
 @endsection
 
-@push('scripts') {{-- یا @section('scripts') اگر در مستر yield کرده‌ای --}}
+@push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <script>

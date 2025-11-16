@@ -14,4 +14,8 @@ interface BoardInterface
     public function update(array $data,$id);
 
     public function destroy($id);
+
+    public function findBoardsWithNameAndId();
+
+
 }

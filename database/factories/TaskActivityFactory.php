@@ -7,7 +7,7 @@ use Web\TaskList\Models\TaskList;
 use Web\User\Models\User;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskActivity>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\TaskActivity>
  */
 class TaskActivityFactory extends Factory
 {

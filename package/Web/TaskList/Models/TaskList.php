@@ -11,6 +11,16 @@ class TaskList extends Model
 {
     use HasFactory;
 
+    const ToDo = 'To Do';
+    const Doing = 'Doing';
+    const Done = 'Done';
+
+    static $nameTaskList = [
+        self::ToDo,
+        self::Doing,
+        self::Done,
+    ];
+
     protected $guarded = [];
 
     public function board()

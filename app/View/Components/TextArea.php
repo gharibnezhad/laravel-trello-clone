@@ -9,12 +9,13 @@ class TextArea extends Component
     public $placeholder;
     public $name;
     public $value;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($placeholder,$name,$value)
+    public function __construct($placeholder, $name, $value = null)
     {
         $this->placeholder = $placeholder;
         $this->name = $name;

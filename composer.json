@@ -6,11 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "barryvdh/laravel-dompdf": "^3.1",
+        "barryvdh/laravel-snappy": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^3.11",
+        "intervention/image-laravel": "^1.5",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "web/core": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -39,7 +42,12 @@
             "Web\\Task\\" : "package/Web/Task",
             "Web\\Front\\" : "package/Web/Front",
             "Web\\Logging\\" : "package/Web/Logging",
-            "Web\\Member\\" : "package/Web/Member"
+            "Web\\Member\\" : "package/Web/Member",
+            "Web\\RolePermissions\\" : "package/Web/RolePermissions",
+            "Web\\TaskActivity\\" : "package/Web/TaskActivity",
+            "Web\\Report\\" : "package/Web/Report",
+            "Web\\Media\\" : "package/Web/Media",
+            "Web\\Comment\\" : "package/Web/Comment"
         }
     },
     "autoload-dev": {
@@ -67,6 +75,12 @@
             "dont-discover": []
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./package/Web/Core/"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -75,6 +89,6 @@
             "pestphp/pest-plugin": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

@@ -1,4 +1,4 @@
-@extends('Dashboard::master')
+@extends('Project::exports.project_pdf')
 @section('breadcrumb')
     <li><a href="#" title="پروژه ها">پروژه ها</a></li>
 @endsection
@@ -8,28 +8,21 @@
 
     <style>
         @font-face {
-            font-family: 'iransans';
-            src: url('{{ public_path("fonts/iransans/IRANSansWebFaNum.ttf") }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-family: 'IRANSans';
+            src: url('file://{{ public_path("fonts/iransans/ttf/IRANSansWeb(FaNum).ttf") }}') format('truetype');
         }
 
         body {
-            font-family: 'iransans';
+            font-family: 'iransans', 'DejaVu Sans', sans-serif;
             direction: rtl;
             text-align: right;
         }
+
     </style>
 
-    <p>سلام، این یک تست فارسی است.</p>
-
-
-
-    <p>سلام، این یک تست فارسی است.</p>
-
-
     <h1>پروژه: {{ $project->name }}</h1>
-
+    <h1>مالک پروژه: {{ $project->users()->where('role_id',\Web\RolePermissions\Models\Role::OWNER)->first() ? $project->users()->first()->name : '_' }}</h1>
+    <br>
     @foreach($project->boards as $board)
         <h2>برد: {{ $board->name }}</h2>
 

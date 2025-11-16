@@ -10,7 +10,7 @@ class TaskActivityRepository implements TaskActivityInterface
 
     public function getAll()
     {
-        return TaskActivity::all();
+        return TaskActivity::paginate(5);
     }
 
     public function delete($id)

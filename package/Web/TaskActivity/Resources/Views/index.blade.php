@@ -7,18 +7,7 @@
 
     <div class="main-content">
         <div class="bg-white padding-20">
-            <div class="t-header-search">
-                <form action="" onclick="event.preventDefault();">
-                    <div class="t-header-searchbox font-size-13">
-                        <input type="text" class="text search-input__box font-size-13" placeholder="جستجوی تسک">
-                        <div class="t-header-search-content ">
-                            <input type="text" class="text" placeholder="نام پروژه">
-                            <input type="text" class="text margin-bottom-20" placeholder="دسته بندی">
-                            <btutton class="btn btn-webamooz_net">جستجو</btutton>
-                        </div>
-                    </div>
-                </form>
-            </div>
+
         </div>
         <div class="table__box">
             <table class="table">
@@ -36,7 +25,7 @@
 
                 @foreach($taskActivities as $task)
                     <tr role="row">
-                        <td>{{$task->task->name}}</td>
+                        <td>{{$task->task->title}}</td>
                         <td>{{$task->description}}</td>
                         <td>{{$task->action}}</td>
                         <td>{{$task->created_at}}</td>
@@ -53,6 +42,7 @@
 
                 </tbody>
             </table>
+            {{$taskActivities->links()}}
         </div>
     </div>
 

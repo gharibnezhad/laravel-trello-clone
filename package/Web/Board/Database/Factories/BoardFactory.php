@@ -5,9 +5,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Web\Board\Models\Board;
 use Web\Project\Models\Project;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Board>
- */
 class BoardFactory extends Factory
 {
     /**

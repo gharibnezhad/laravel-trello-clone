@@ -33,7 +33,8 @@ class ProjectRepository implements ProjectInterface
     public function destroy($id)
     {
         $project = Project::findOrFail($id);
-        return $project->delete($id);
+        $project->delete();
+        return $project;
     }
 
     public function findWithBoardsAndTasks($id)

@@ -2,7 +2,6 @@
 
 namespace Web\Export\Services;
 
-use Web\Export\Contracts\JsonExporterInterface;
 use Web\Export\Contracts\PdfExporterInterface;
 use Web\Project\Models\Project;
 

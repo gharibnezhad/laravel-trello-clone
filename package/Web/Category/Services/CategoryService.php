@@ -28,7 +28,7 @@ class CategoryService
         $category = $this->categoryRepo->findById($id);
 
         $data = [
-            "name" => $request->filled('name') ? $request->name : $category->name,
+            "title" => $request->filled('title') ? $request->title : $category->title,
             "slug" => $request->filled('slug') ? $request->slug : $category->slug,
         ];
 

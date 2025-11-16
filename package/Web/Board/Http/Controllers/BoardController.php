@@ -4,41 +4,52 @@ namespace Web\Board\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Web\Board\Http\Requests\BoardRequest;
+use Web\Board\Models\Board;
 use Web\Board\Repositories\BoardRepositories;
 use Web\Board\Services\BoardService;
-use Web\Project\Repositories\ProjectRepository;
-use Web\Task\Models\Task;
+use Web\Project\Services\ProjectService;
+use Web\User\Models\User;
 
 class BoardController extends Controller
 {
     protected $boardRepo;
-    protected $ProjectRepo;
+    protected $projectService;
     protected $boardService;
 
     public function __construct(BoardRepositories $boardRepo,
                                 BoardService $boardService,
-                                ProjectRepository $ProjectRepo)
+                                ProjectService $projectService)
     {
         $this->boardRepo = $boardRepo;
         $this->boardService = $boardService;
-        $this->ProjectRepo = $ProjectRepo;
+        $this->projectService = $projectService;
     }
 
     public function index()
     {
-        $boards = $this->boardRepo->getAllBoards();
+        $this->authorize('index',Board::class);
+        $boards = $this->boardService->getAllBoardForUser(auth()->user());
         return view('Board::panel.index',compact('boards'));
     }
 
     public function create()
     {
-        $projects =$this->ProjectRepo->getAllProject();
-
+        $this->authorize('create',Board::class);
+        $projects =$this->projectService->getAllProjectForUser(auth()->user());
         return view('Board::panel.create',compact('projects'));
     }
 
-    public function store(Request $request)
+    public function show($id)
     {
+        $board = $this->boardRepo->findById($id);
+        $this->authorize('view',$board);
+        return view('Board::panel.show',compact('board'));
+    }
+
+    public function store(BoardRequest $request)
+    {
+        $this->authorize('store',Board::class);
         $this->boardService->storeBoard($request);
         return redirect()->route('boards.index');
     }
@@ -46,49 +57,66 @@ class BoardController extends Controller
     public function edit($id)
     {
         $board = $this->boardRepo->findById($id);
-        return view('Board::panel.edit',compact('board'));
+        $this->authorize('edit',$board);
+        $projects =$this->projectService->getAllProjectForUser(auth()->user());
+        return view('Board::panel.edit',compact('board','projects'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request,Board $board)
     {
-        $this->boardService->updateBoard($request,$id);
-
+        $this->authorize('update',$board);
+        $this->boardService->updateBoard($request,$board->id);
         return redirect()->route('boards.index');
     }
 
-    public function destroy($id)
+    public function destroy(Board $board)
     {
-        $this->boardService->deleteBoard($id);
+        $this->authorize('delete',$board);
+        $this->boardService->deleteBoard($board->id);
         return redirect()->route('boards.index');
     }
 
     public function singleBoardAddTask(Request $request,$id)
     {
         $this->boardService->addTask($request,$id);
-
         return redirect()->back();
     }
 
     public function updateTaskOrder(Request $request)
     {
-        $request->validate([
-            'task_list_id' => 'required|integer|exists:task_lists,id',
-            'tasks' => 'required|array',
-            'tasks.*.id' => 'required|integer|exists:tasks,id',
-            'tasks.*.order' => 'required|integer|min:1',
-        ]);
-
-        $taskListId = $request->input('task_list_id');
-        $tasks = $request->input('tasks');
-
-        foreach ($tasks as $taskData) {
-            Task::where('id', $taskData['id'])->update([
-                'task_list_id' => $taskListId,
-                'order' => $taskData['order']
-            ]);
-        }
+        $this->boardService->updateTaskOrder($request);
 
         return response()->json(['status' => 'success']);
 
+    }
+
+    public function members($boardId)
+    {
+        $board = $this->boardRepo->findById($boardId);
+        $this->authorize('members',$board);
+        $members = $this->boardService->getBoardMembers($boardId);
+        return view('Board::members.index',compact('members','board'));
+    }
+
+    public function createMemberToBoard($boardId)
+    {
+        $board = $this->boardRepo->findById($boardId);
+        $this->authorize('createMemberToBoard',$board);
+        $users = User::all();
+        return view('Board::members.create',compact('board','users'));
+    }
+
+    public function addMemberToBoard(Request $request,Board $board)
+    {
+        $this->authorize('addMemberToBoard',$board);
+        $this->boardService->addUserToBoard($board->id,$request->user_id);
+        return redirect()->route('boards.index');
+    }
+
+    public function removeMemberToBoard(Board $board,$userId)
+    {
+        $this->authorize('removeMemberToBoard',$board);
+        $this->boardService->removeUserToBoard($board->id,$userId);
+        return redirect()->route('boards.index');
     }
 }

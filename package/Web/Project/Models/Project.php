@@ -6,6 +6,8 @@ use Web\Board\Models\Board;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Web\Category\Models\Category;
+use Web\Comment\Models\Comment;
+use Web\Media\Models\Media;
 use Web\User\Models\User;
 
 class Project extends Model
@@ -17,12 +19,17 @@ class Project extends Model
         'slug',
         'description',
         'category_id',
-        'is_archived'
+        'is_archived',
+        'file_id',
+        'visibility'
     ];
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(User::class)
+            ->using(ProjectUser::class)
+            ->withPivot('role_id')
+            ->withTimestamps();
     }
 
     public function category()
@@ -38,5 +45,15 @@ class Project extends Model
     public static function newFactory()
     {
         return \Web\Project\Database\Factories\ProjectFactory::new();
+    }
+
+    public function media()
+    {
+        return $this->belongsTo(Media::class,'file_id');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class,'commentable')->whereNull('parent_id');
     }
 }

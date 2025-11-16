@@ -1,17 +1,25 @@
 <?php
 namespace Web\User\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Web\Board\Models\Board;
+use Web\Board\Models\BoardUser;
+use Web\Comment\Models\Comment;
+use Web\Media\Models\Media;
 use Web\Project\Models\Project;
+use Web\Project\Models\ProjectUser;
+use Web\Task\Models\Task;
+use Web\TaskActivity\Models\TaskActivity;
+use Web\User\Traits\HasRolesAndPermissions;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,HasRolesAndPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +30,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'mobile'
+        'mobile',
+        'username',
+        'email_verified_at'
     ];
 
     /**
@@ -44,18 +54,55 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+
+    const  STATUS_ACTIVE = 'active';
+    const  STATUS_INACTIVE = 'inactive';
+
+
+    public static $status =[
+        self::STATUS_ACTIVE,
+        self::STATUS_INACTIVE,
+    ];
+
     public function projects()
     {
-        return $this->belongsToMany(Project::class)->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(Project::class)
+            ->using(ProjectUser::class)
+            ->withPivot('role_id')
+            ->withTimestamps();
     }
 
     public function taskActivities()
     {
-        return $this->hasMany(\App\Models\TaskActivity::class);
+        return $this->hasMany(TaskActivity::class);
     }
 
     public function tasks()
     {
-        return $this->belongsToMany(\Web\Task\Models\Task::class)->withTimestamps();
+        return $this->belongsToMany(Task::class)->withTimestamps();
     }
+
+    public function image()
+    {
+        return $this->belongsTo(Media::class,'image_id');
+    }
+
+    public function boards()
+    {
+        return $this->belongsToMany(Board::class)
+            ->using(BoardUser::class)
+            ->withPivot('role_id')
+            ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    protected static function newFactory()
+    {
+        return \Web\User\Database\Factories\UserFactory::new();
+    }
+
 }

@@ -12,13 +12,12 @@
                     @method('PATCH')
                     <x-input type="text" name="name" class="text" value="{{old('name',$taskList->name)}}"
                              placeholder="عنوان"/>
-                    <x-input type="number" name="order" class="text text-left" value="{{old('order',$taskList->order)}}"
+                    <x-input type="number" name="position" class="text text-left" value="{{old('position',$taskList->position)}}"
                              placeholder="ترتیب نمایش"/>
                     <x-select name="board_id">
                         <option value="">انتخاب برد</option>
                         @foreach($boards as  $board)
-
-                            <option value="{{ $board->id }}" {{ $board->id == old('board_id', $selectedBoardId ?? '') ? 'selected' : '' }}>
+                            <option value="{{ $board->id }}" {{ $board->id == old('board_id', $taskList->board_id ?? '') ? 'selected' : '' }}>
                             {{ $board->name }}
                         @endforeach
                     </x-select>

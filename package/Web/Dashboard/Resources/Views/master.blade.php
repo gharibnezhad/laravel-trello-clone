@@ -14,5 +14,7 @@
 </body>
 <script src="{{asset('panel/js/jquery-3.4.1.min.js')}}"></script>
 <script src="{{asset('panel/js/js.js')}}"></script>
+<link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
+<script src="{{ asset('js/jquery.toast.min.js') }}"></script>
 @yield('js')
 </html>

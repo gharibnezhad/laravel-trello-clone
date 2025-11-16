@@ -18,22 +18,11 @@
                     </select>
 
                     <select name="task_list_id" id="taskList-select">
-                        <option value="">ابتدا یک برد انتخاب کنید</option>
+                        <option value=""> انتخاب تسک لیست</option>
                     </select>
-
-                    <select id="choices-users" name="users[]" multiple>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}"
-                                {{ in_array($user->id, old('users', [])) ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
-
-
-
                     <x-input type="text" name="title"  class="text" placeholder="عنوان تسک" />
-                    <x-textarea name="description" placeholder="توضیحات تسک" class="text h" value=""></x-textarea>
+                    <textarea name="description" placeholder="توضیحات تسک" class="text h" ></textarea>
+                    <label for="due_time">زمان تحویل تسک</label>
                     <x-input type="datetime-local" name="due_time" class="text text-left " placeholder="موعد تحویل"/>
                     <x-input type="number" name="order"  class="text" placeholder="ترتیب نمایش" />
                     <x-select name="priority" >
@@ -41,13 +30,6 @@
                         @foreach(\Web\Task\Models\Task::$priority as $priority)
 
                         <option value="{{$priority}}">{{$priority}}</option>
-                        @endforeach
-                    </x-select>
-                    <x-select name="status" >
-                        <option value="">وضعیت تسک</option>
-                        @foreach(\Web\Task\Models\Task::$status as $status)
-
-                        <option value="{{$status}}">{{$status}}</option>
                         @endforeach
                     </x-select>
 
@@ -61,17 +43,10 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 @section('js')
     <script>
-        new Choices('#choices-users', {
-            removeItemButton: true,
-            placeholderValue: 'کاربران را انتخاب کنید',
-            searchPlaceholderValue: 'جستجوی کاربران'
-        });
-    </script>
-    <script>
         $(document).ready(function () {
             $('#board-select').on('change', function () {
                 const boardId = $(this).val();
-                $('#taskList-select').html('<option value="">ابتدا یک برد انتخاب کنید</option>');
+                $('#taskList-select').html('<option value="">انتخاب تسک لیست</option>');
                 $('#taskList-select').nextAll('.dropdown-select, .dd-search').remove();
 
                 create_custom_dropdowns();

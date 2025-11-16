@@ -2,8 +2,10 @@
 
 namespace Web\Member\Repositories;
 
+use Web\Board\Models\Board;
 use Web\Member\Contracts\MemberInterface;
 use Web\Project\Models\Project;
+use Web\RolePermissions\Models\Role;
 use Web\Task\Models\Task;
 
 class MemberRepositories implements MemberInterface
@@ -18,7 +20,7 @@ class MemberRepositories implements MemberInterface
     public function addMember($type, $id, $userId)
     {
         $model = $this->resolveModel($type,$id);
-        return $model->users()->attach($userId);
+        return $model->users()->attach($userId,['role_id'=>Role::MEMBER]);
     }
 
     public function removeMember($type, $id, $userId)
@@ -32,6 +34,7 @@ class MemberRepositories implements MemberInterface
         return match ($type){
             'project' => Project::findOrFail($id),
             'task' => Task::findOrFail($id),
+            'board' => Board::findOrFail($id),
             default   => throw new \InvalidArgumentException("Invalid type: $type")
         };
     }

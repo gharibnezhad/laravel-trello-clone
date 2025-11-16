@@ -207,6 +207,13 @@ return [
         \Web\Front\Providers\FrontServiceProvider::class,
         \Web\Logging\Providers\LoggerServiceProvider::class,
         \Web\Member\Providers\MemberServiceProvider::class,
+        \Web\RolePermissions\Providers\RolePermissionServiceProvider::class,
+        \Web\TaskActivity\Providers\TaskActivityServiceProvider::class,
+        \Web\Report\Providers\ReportServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
+        \Web\Media\Providers\MediaServiceProvider::class,
+        \Web\Comment\Providers\CommentServiceProvider::class,
+
 
 
 
@@ -225,6 +232,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'PDFS' => Barryvdh\Snappy\Facades\SnappyPdf::class,
     ])->toArray(),
 
 ];

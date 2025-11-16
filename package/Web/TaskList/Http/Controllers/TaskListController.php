@@ -3,9 +3,8 @@ namespace Web\TaskList\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Web\Board\Models\Board;
 use Web\Board\Repositories\BoardRepositories;
-use Web\Board\Services\BoardService;
+use Web\TaskList\Models\TaskList;
 use Web\TaskList\Services\TaskListService;
 
 class TaskListController extends Controller
@@ -21,38 +20,45 @@ class TaskListController extends Controller
 
     public function index()
     {
-        $taskLists = $this->listService->all();
+        $this->authorize('index',TaskList::class);
+        $taskLists = $this->listService->getAllTaskLists();
         return view('TaskList::Panel.index',compact('taskLists'));
     }
 
     public function create()
     {
+        $this->authorize('create',TaskList::class);
         $boards = $this->boardRepo->findBoardsWithNameAndId();
         return view('TaskList::Panel.create',compact('boards'));
     }
 
     public function store (Request $request)
     {
+        $this->authorize('store',TaskList::class);
         $this->listService->storeTaskList($request);
-
         return redirect()->route('taskLists.index');
     }
 
     public function edit($id)
     {
         $taskList=$this->listService->findTaskList($id);
+        $this->authorize('edit',$taskList);
         $boards = $this->boardRepo->getAllBoards();
-        $selectedBoardId = $taskList->board_id;
-        return view('TaskList::Panel.edit',compact('taskList','boards','selectedBoardId'));
+        return view('TaskList::Panel.edit',compact('taskList','boards'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request,TaskList $taskList)
     {
-        $this->listService->updateTaskList($request,$id);
-
+        $this->authorize('update',$taskList);
+        $this->listService->updateTaskList($request,$taskList->id);
         return redirect()->route('taskLists.index');
     }
 
-
+    public function destroy(TaskList $taskList)
+    {
+        $this->authorize('delete',$taskList);
+        $this->listService->delete($taskList->id);
+        return redirect()->route('taskLists.index');
+    }
 
 }

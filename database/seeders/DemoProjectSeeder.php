@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\TaskActivity;
 use Board;
 use Illuminate\Database\Seeder;
 use Models\Project;
 use Models\TaskList;
+use TaskActivity;
 use User;
 use Web\Task\Models\Task;
 

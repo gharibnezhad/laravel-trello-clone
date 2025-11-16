@@ -4,10 +4,14 @@ namespace Web\Board\Providers;
 
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Web\Board\Database\Seeder\BoardSeeder;
 use Web\Board\Contracts\BoardInterface;
+use Web\Board\Models\Board;
+use Web\Board\Policies\BoardPolicy;
 use Web\Board\Repositories\BoardRepositories;
+use Web\RolePermissions\Models\Permission;
 
 class BoardServiceProvider extends ServiceProvider
 {
@@ -20,12 +24,13 @@ class BoardServiceProvider extends ServiceProvider
         $this->loadJsonTranslationsFrom(__DIR__.'/../Resources/lang');
         DatabaseSeeder::$seeders[] = BoardSeeder::class;
         $this->app->bind(BoardInterface::class,BoardRepositories::class);
+        Gate::policy(Board::class,BoardPolicy::class);
     }
 
     public function boot()
     {
         Factory::guessFactoryNamesUsing(function ($modelName) {
-            if (str_starts_with($modelName, 'Web\\Project\\')) {
+            if (str_starts_with($modelName, 'Web\\Board\\')) {
                 return 'Web\\Board\\Database\\Factories\\' . class_basename($modelName) . 'Factory';
             }
 
@@ -35,7 +40,11 @@ class BoardServiceProvider extends ServiceProvider
         config()->set('sidebar.items.Boards',[
             'icon' => 'i-articles',
             'title' => 'بردها',
-            'url' => route('boards.index')
+            'url' => route('boards.index'),
+            "permission"=>[
+                Permission::PERMISSION_SUPER_ADMIN,
+                Permission::PERMISSION_MANAGE_OWN_BOARD,
+            ]
         ]);
 
 

@@ -3,12 +3,16 @@
 namespace  Web\TaskActivity\Providers;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Web\RolePermissions\Models\Permission;
 use Web\Task\Events\TaskCreated;
 use Web\Task\Events\TaskMoved;
 use Web\Task\Events\TaskUpdated;
 use Web\TaskActivity\Contracts\TaskActivityInterface;
 use Web\TaskActivity\Listeners\LogTaskActivity;
+use Web\TaskActivity\Models\TaskActivity;
+use Web\TaskActivity\Policies\TaskActivityPolicy;
 use Web\TaskActivity\Repositories\TaskActivityRepository;
 
 class TaskActivityServiceProvider extends ServiceProvider
@@ -20,6 +24,8 @@ class TaskActivityServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views','TaskActivities');
 
         $this->app->bind(TaskActivityInterface::class,TaskActivityRepository::class);
+
+        Gate::policy(TaskActivity::class,TaskActivityPolicy::class);
     }
 
     public function boot()
@@ -27,7 +33,8 @@ class TaskActivityServiceProvider extends ServiceProvider
         config()->set('sidebar.items.taskActivity',[
             "icon"=>"i-courses",
             "title"=>"لاگ تسک ها",
-            "url"=>route('taskActivities.index')
+            "url"=>route('taskActivities.index'),
+            "permission"=>Permission::PERMISSION_SUPER_ADMIN
         ]);
 
         Event::listen(TaskCreated::class,LogTaskActivity::class);

@@ -1,0 +1,21 @@
+{
+    "name": "web/core",
+
+    "description": "Core module containing shared logic and traits",
+
+    "type": "library",
+
+    "autoload": {
+
+        "psr-4": {
+            "Web\\Core\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers":[
+                "\\Web\\Core\\Providers\\CoreServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,5 +1,5 @@
 <?php
-
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Illuminate\Support\Facades\Route;
 use Web\Project\Http\Controllers\ProjectController;
 
@@ -11,6 +11,8 @@ Route::group(["namespace"=>"Web\Project\Http\Controllers",
     Route::get('createMembersProject/{project}',[ProjectController::class,'createMemberToProject'])->name('createMemberToProject');
     Route::post('addMembersProject/{project}',[ProjectController::class,'addMemberToProject'])->name('addMembersProject');
     Route::delete('removeUserToProject/{projectId}/{userId}',[ProjectController::class,'removeMemberToProject'])->name('removeUserToProject');
-    Route::post('/projects/{project}/export/json',[ProjectController::class,'exportJson'])->name('projects.exportJson');
+    Route::get('/projects/{project}/export/json',[ProjectController::class,'exportJson'])->name('projects.exportJson');
     Route::post('/projects/{project}/export/pdf',[ProjectController::class,'exportPdf'])->name('projects.exportPdf');
+    Route::get('/projectsSearch',[ProjectController::class,'searchProject'])->name('searchProject');
+
 });

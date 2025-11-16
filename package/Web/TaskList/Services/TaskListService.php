@@ -15,7 +15,7 @@ class TaskListService
         return $this->taskListRepo->findById($id);
     }
 
-    public function all()
+    public function getAllTaskLists()
     {
         return $this->taskListRepo->getAllTaskList();
     }
@@ -24,7 +24,7 @@ class TaskListService
     {
         $data = [
             'name' => $request->name,
-            'order' => $request->order,
+            'position' => $request->position,
             'board_id' => $request->board_id,
         ];
 
@@ -35,11 +35,16 @@ class TaskListService
     {
         $data = [
             'name' => $request->name,
-            'order' => $request->order,
+            'position' => $request->position,
             'board_id' => $request->board_id,
         ];
 
         return $this->taskListRepo->update($data,$id);
+    }
+
+    public function delete($taskList)
+    {
+        return $this->taskListRepo->destroy($taskList);
     }
 
 }

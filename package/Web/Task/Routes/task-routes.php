@@ -9,4 +9,13 @@ Route::group(["namespace" => "Web\Task\Http\Controllers",
     Route::resource('tasks', 'TaskController');
     Route::get('/taskLists/by-board/{board}', [TaskController::class, 'getByBoard']);
 
+
+    Route::get('membersTask/{task}',[TaskController::class,'members'])->name('membersTask');
+    Route::get('createMembersTask/{task}',[TaskController::class,'createMemberToTask'])
+        ->name('createMemberToTask');
+    Route::post('addMembersTask/{task}',[TaskController::class,'addMemberToTask'])
+        ->name('addMembersTask');
+    Route::delete('removeUserToTask/{task}/{userId}',[TaskController::class,'removeMemberToTask'])
+        ->name('removeUserToTask');
+
 });

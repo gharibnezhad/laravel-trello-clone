@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('task_lists', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('order')->default(0);
+            $table->bigInteger('position')->default(0);
             $table->bigInteger('board_id')->unsigned();
             $table->foreign('board_id')->references('id')->on('boards')
                 ->onDelete('cascade');

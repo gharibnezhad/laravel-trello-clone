@@ -3,7 +3,7 @@
 namespace Web\Board\Database\Seeder;
 
 use Illuminate\Database\Seeder;
-use Models\TaskList;
+use Web\TaskList\Models\TaskList;
 use Web\Board\Models\Board;
 
 class BoardSeeder extends Seeder

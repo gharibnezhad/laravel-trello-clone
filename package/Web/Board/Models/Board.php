@@ -3,8 +3,10 @@ namespace Web\Board\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Web\Comment\Models\Comment;
 use Web\TaskList\Models\TaskList;
 use Web\Project\Models\Project;
+use Web\User\Models\User;
 
 class Board extends Model
 {
@@ -35,19 +37,19 @@ class Board extends Model
         return $this->hasMany(TaskList::class);
     }
 
-    protected static function booted()
+    public function users()
     {
-        static::created(function ($board){
-            $defaultTaskList =[
-                ['name'=>'To Do','order'=>1],
-                ['name'=>'Doing','order'=>2],
-                ['name'=>'Done','order'=>3],
-            ];
-            foreach ($defaultTaskList as $list){
-                $board->taskLists()->create($list);
-            }
-        });
+        return $this->belongsToMany(User::class)
+            ->using(BoardUser::class)
+            ->withPivot('role_id')
+            ->withTimestamps();
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class,'commentable')->whereNull('parent_id');
+    }
+
 
     public static function newFactory()
     {

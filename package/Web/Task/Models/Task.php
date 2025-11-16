@@ -2,9 +2,11 @@
 
 namespace Web\Task\Models;
 
-use App\Models\TaskActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Web\Board\Models\Board;
+use Web\Comment\Models\Comment;
+use Web\TaskActivity\Models\TaskActivity;
 use Web\TaskList\Models\TaskList;
 use Web\User\Models\User;
 
@@ -24,15 +26,6 @@ class Task extends Model
       self::PRIORITY_HIGH
     ];
 
-    const STATUS_TODO = 'todo';
-    const STATUS_IN_PROGRESS = 'in_progress';
-    const STATUS_DONE = 'done';
-
-    static $status = [
-        self::STATUS_TODO,
-        self::STATUS_IN_PROGRESS,
-        self::STATUS_DONE
-    ];
 
     public function taskList()
     {
@@ -46,8 +39,15 @@ class Task extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class,'commentable')->whereNull('parent_id');
+    }
+
+
 
     protected static function newFactory()
     {

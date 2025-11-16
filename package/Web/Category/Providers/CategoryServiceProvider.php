@@ -4,10 +4,14 @@ namespace Web\Category\Providers;
 
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Web\Category\Database\Seeder\CategorySeeder;
 use Web\Category\Contracts\CategoryInterface;
+use Web\Category\Models\Category;
+use Web\Category\Policies\CategoryPolicy;
 use Web\Category\Repositories\CategoryRepository;
+use Web\RolePermissions\Models\Permission;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -26,6 +30,7 @@ class CategoryServiceProvider extends ServiceProvider
         });
         DatabaseSeeder::$seeders[] = CategorySeeder::class;
         $this->app->bind(CategoryInterface::class,CategoryRepository::class);
+        Gate::policy(Category::class,CategoryPolicy::class);
     }
 
     public function boot()
@@ -33,7 +38,8 @@ class CategoryServiceProvider extends ServiceProvider
         config()->set('sidebar.items.categories',[
             "icon"=> "i-categories",
             "title" => "دسته بندی",
-            "url" => route('categories.index')
+            "url" => route('categories.index'),
+            "permission"=>Permission::PERMISSION_SUPER_ADMIN
         ]);
     }
 }

@@ -10,22 +10,29 @@ $(document).on('click', function (event) {
         $('.dropdown__notification').removeClass('is-active');
     }
 })
-$('.avatar-img__input').on('change', function () {
-    var input = $(this);
-    if (input[0] && input[0].files && input[0].files[0]) {
-        if (!input[0].files[0].type.includes("image")) {
-            // $('.avatar--img').attr('src', '../img/pr3o.png');
-            return false;
-        }
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('.avatar___img')
-                .attr('src', e.target.result);
-        };
+// $('.avatar-img__input').on('change', function () {
+//     var input = $(this);
+//     if (input[0] && input[0].files && input[0].files[0]) {
+//         if (!input[0].files[0].type.includes("image")) {
+//             // $('.avatar--img').attr('src', '../img/pr3o.png');
+//             return false;
+//         }
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $('.avatar___img')
+//                 .attr('src', e.target.result);
+//         };
+//
+//         reader.readAsDataURL(input[0].files[0]);
+//     }
+// });
 
-        reader.readAsDataURL(input[0].files[0]);
-    }
+$(document).on('click', '.avatar__img', function () {
+    document.getElementById('userPhotoInput').click();
 });
+
+
+
 $('input:file').change(
     function (e) {
         // console.log(e.currentTarget.files);
@@ -39,6 +46,11 @@ $('input:file').change(
 
 function create_custom_dropdowns() {
     $('select').each(function (i, select) {
+        if ($(this).attr('name') === 'role[]' || $(this).hasClass('no-plugin')) {
+            $(this).show();
+            return;
+        }
+
         if (!$(this).next().hasClass('dropdown-select')) {
             $(this).after('<div class="dropdown-select wide ' + ($(this).attr('class') || '') + '" tabindex="0"><span class="current"></span><div class="list"><ul></ul></div></div>');
             var dropdown = $(this).next();
@@ -229,18 +241,77 @@ $('.discounts #discounts-field-2').on('click', function (e) {
 $('.discounts #discounts-field-1').on('click', function (e) {
     $('.discounts .dropdown-select').removeClass('is-active')
 });
-function exportJson(projectId){
-    if (confirm("آیا از دریافت خروجی json این پروژه اطمینان دارید؟")){
-        document.getElementById('jsonExportForm-' + projectId).submit();
 
+function showJson(projectId) {
+    if (confirm("آیا از نمایش خروجی json این پروژه اطمینان دارید؟")){
+        window.open(`/projects/${projectId}/export/json`, '_blank');
     }
 }
 
+function downloadJson(projectId) {
+    if (confirm("آیا از دانلود خروجی json این پروژه اطمینان دارید؟"))
+    window.location.href = `/projects/${projectId}/export/json?download=1`;
+}
+
+
 function exportPdf(projectId){
-    if (confirm("آیا از دریافت خروجی pdf این پروژه اطمینان دارید؟")){
+    if (confirm("آیا از دانلود خروجی pdf این پروژه اطمینان دارید؟")){
         document.getElementById('jsonExportFormPdf-' + projectId).submit();
 
     }
 }
 
+function deleteItem(event, route, element = 'tr') {
+    event.preventDefault()
+    if (confirm('آیا از حذف این کاربر اطمینان دارید؟')) {
+        $.post(route, {_method: "delete", _token: $('meta[name="csrf-token"]').attr('content')})
+            .done(function (response) {
+                event.target.closest(element).remove();
+                $.toast({
+                    heading: 'عملیات موفق',
+                    text: response.message,
+                    showHideTransition: 'slide',
+                    icon: 'success'
+                })
+            })
+            .fail(function (response) {
+                $.toast({
+                    heading: 'عملیات نا موفق',
+                    text: response.message,
+                    showHideTransition: 'slide',
+                    icon: 'error'
+                })
+            })
+    }
+}
+
+function updateConfirmationStatus(event, route, message, status, field = 'confirmation_status') {
+    event.preventDefault();
+    if (confirm(message)) {
+        $.post(route, {_method: "PATCH", _token: $('meta[name="csrf-token"]').attr('content')})
+            .done(function (response) {
+                $(event.target).closest('tr').find('td.' + field).text(status);
+                if (status == "تایید شده") {
+                    $(event.target).closest('tr').find('td.' + field).html("<span class='text-success'>" + status + "</span>");
+                } else {
+                    $(event.target).closest('tr').find('td.' + field).html("<span class='text-error'>" + status + "</span>");
+                }
+
+                $.toast({
+                    heading: 'عملیات موفق',
+                    text: response.message,
+                    showHideTransition: 'slide',
+                    icon: 'success'
+                })
+            })
+            .fail(function (response) {
+                $.toast({
+                    heading: 'عملیات ناموفق',
+                    text: response.message,
+                    showHideTransition: 'slide',
+                    icon: 'error'
+                })
+            })
+    }
+}
 

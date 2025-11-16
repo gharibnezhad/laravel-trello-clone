@@ -10,7 +10,7 @@
                 <form action="{{route('taskLists.store')}}" method="post" class="padding-30">
                     @csrf
                     <x-input type="text" name="name"  class="text" placeholder="عنوان" />
-                    <x-input type="number" name="order" class="text text-left " placeholder="ترتیب نمایش"/>
+                    <x-input type="number" name="position" class="text text-left " placeholder="ترتیب نمایش"/>
                     <x-select name="board_id" >
                         <option value="">انتخاب برد</option>
                         @foreach($boards as $key => $value)
