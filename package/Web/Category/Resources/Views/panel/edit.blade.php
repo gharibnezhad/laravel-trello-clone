@@ -10,8 +10,8 @@
                 <form action="{{route('categories.update',$category->id)}}" method="post" class="padding-30">
                     @csrf
                     @method('PATCH')
-                        <input type="text" name="title" value="{{$category->title}}" placeholder="نام دسته بندی" class="text" required>
-                        <input type="text" name="slug" placeholder="نام انگلیسی دسته بندی" value="{{$category->slug}}" class="text" required>
+                        <x-input type="text" name="title" value="{{$category->title}}" placeholder="نام دسته بندی" class="text" />
+                        <x-input type="text" name="slug" placeholder="نام انگلیسی دسته بندی" value="{{$category->slug}}" class="text" />
                         <button class="btn btn-webamooz_net">اضافه کردن</button>
                 </form>
             </div>

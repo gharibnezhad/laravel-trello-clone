@@ -4,7 +4,7 @@ namespace Web\Task\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Web\Board\Repositories\BoardRepositories;
+use Web\Board\Repositories\BoardRepository;
 use Web\Board\Services\BoardService;
 use Web\Task\Models\Task;
 use Web\Task\Repositories\TaskRepository;
@@ -18,10 +18,10 @@ class TaskController extends Controller
     public $boardRepo;
     public $boardService;
 
-    public function __construct(TaskRepository $taskRepo,
-                                BoardRepositories $boardRepo,
-                                TaskService $taskService,
-                                BoardService $boardService)
+    public function __construct(TaskRepository  $taskRepo,
+                                BoardRepository $boardRepo,
+                                TaskService     $taskService,
+                                BoardService    $boardService)
     {
         $this->taskRepo = $taskRepo;
         $this->boardRepo = $boardRepo;
@@ -60,7 +60,7 @@ class TaskController extends Controller
     {
         $task = $this->taskRepo->findById($task->id);
         $this->authorize('update',$task);
-        $boards = $this->boardRepo->getAllBoards();
+        $boards = $this->boardRepo->getBoardsWithProject();
         return view('Tasks::Panel.edit',compact('task','boards'));
     }
 

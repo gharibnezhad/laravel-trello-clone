@@ -45,8 +45,8 @@
                 <p class="box__title">ایجاد دسته بندی جدید</p>
                 <form action="{{route('categories.store')}}" method="post" class="padding-30">
                     @csrf
-                    <input type="text" name="title" placeholder="نام دسته بندی" class="text" required>
-                    <input type="text" name="slug" placeholder="نام انگلیسی دسته بندی" class="text" required>
+                    <x-input type="text" name="title" placeholder="نام دسته بندی" class="text"/>
+                    <x-input type="text" name="slug" placeholder="نام انگلیسی دسته بندی" class="text"/>
                     <button class="btn btn-webamooz_net">اضافه کردن</button>
                 </form>
             </div>

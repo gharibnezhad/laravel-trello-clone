@@ -18,7 +18,7 @@ class CategoryRepository implements CategoryInterface
         return Category::all();
     }
 
-    public function store($data)
+    public function store(array $data)
     {
         return Category::create($data);
     }
@@ -26,7 +26,8 @@ class CategoryRepository implements CategoryInterface
     public function update(array $data, $id)
     {
         $category = Category::findOrFail($id);
-        return $category->update($data);
+        $category->update($data);
+        return $category;
     }
 
     public function destroy($id)

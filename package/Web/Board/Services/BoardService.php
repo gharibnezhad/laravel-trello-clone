@@ -27,16 +27,8 @@ class BoardService
         $this->memberService = $memberService;
     }
 
-    public function storeBoard($request)
+    public function storeBoard(array $data,User $user)
     {
-        $user = auth()->user();
-        $data = [
-            "name" => $request->name,
-            "project_id" => $request->project_id,
-            "visibility" => $request->visibility,
-            "order" => $request->order,
-        ];
-
         return DB::transaction(function () use ($data,$user){
             $board = $this->boardRepo->store($data);
             $user->boards()->attach($board->id,['role_id' => Role::OWNER]);
@@ -45,30 +37,24 @@ class BoardService
                 ['name'=>'Doing','position'=>2000],
                 ['name'=>'Done','position'=>3000],
             ];
-            foreach ($defaultTaskList as $list){
-                $board->taskLists()->create($list);
-            }
+
+                $board->taskLists()->createMany($defaultTaskList);
+
             return $board;
         });
 
     }
 
-    public function updateBoard($request, $boardId)
+    public function updateBoard(array $data,Board $board)
     {
-        $board = $this->boardRepo->findById($boardId);
-        $data = [
-            "name" => $request->filled('name') ? $request->name : $board->name,
-            "project_id" => $request->filled('project_id') ? $request->project_id : $board->project_id,
-            "visibility" => $request->filled('visibility') ? $request->visibility : $board->visibility,
-            "order" => $request->filled('order') ? $request->order : $board->order,
-        ];
-
-        return $this->boardRepo->update($data, $boardId);
+        return DB::transaction(function () use ($data,$board){
+           return $this->boardRepo->update($data,$board->id);
+        });
     }
 
-    public function addTask($request, $id)
+    public function addTask($request,$id)
     {
-        $this->boardRepo->findById($id);
+        $this->boardRepo->findBoardWithProject($id);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'taskList' => 'required|exists:task_lists,id',
@@ -136,10 +122,4 @@ class BoardService
         return $this->memberService->removeMember('board',$boardId,$userId);
     }
 
-    public function getAllBoardForUser(User $user)
-    {
-        return Board::whereHas('users',function ($query) use ($user){
-            $query->where('users.id',$user->id);
-        })->get();
-    }
 }

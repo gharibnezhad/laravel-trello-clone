@@ -2,12 +2,14 @@
 
 namespace Web\Board\Contracts;
 
+use Web\User\Models\User;
+
 interface BoardInterface
 {
 
-    public function findById($id);
+    public function findBoardWithProject($id);
 
-    public function getAllBoards();
+    public function getBoardsWithProject();
 
     public function store(array $data);
 
@@ -17,5 +19,6 @@ interface BoardInterface
 
     public function findBoardsWithNameAndId();
 
+    public function getAllBoardForUser(User $user);
 
 }

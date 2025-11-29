@@ -21,11 +21,9 @@ class UpdateProjectRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $project = $this->route('project');
-
         $this->merge([
-            'name' => $this->filled('name') ? trim($this->name) : $project->name,
-            'slug' => $this->filled('slug') ? Str::slug($this->slug) : $project->slug
+            'name' => $this->filled('name') ? trim($this->name) : $this->name,
+            'slug' => $this->filled('slug') ? Str::slug($this->slug) : $this->slug
         ]);
     }
 

@@ -40,13 +40,12 @@ class ProjectService
     }
 
 
-    public function storeProject(array $data, $notifier,int $mediaId)
+    public function storeProject(array $data, $notifier,int $mediaId,User $user)
     {
         DB::beginTransaction();
 
         try {
             $project = $this->projectRepo->store($data);
-            $user = auth()->user();
             $user->projects()->attach($project->id, ['role_id' => Role::OWNER]);
             $notifier->send($user, new ProjectCreatedNotification($project));
             DB::commit();

@@ -3,14 +3,14 @@ namespace Web\Front\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Web\Board\Models\Board;
-use Web\Board\Repositories\BoardRepositories;
+use Web\Board\Repositories\BoardRepository;
 
 
 class FrontController extends Controller
 {
     protected $boardRepo;
 
-    public function __construct(BoardRepositories $boardRepo)
+    public function __construct(BoardRepository $boardRepo)
     {
         $this->boardRepo = $boardRepo;
     }

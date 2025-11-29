@@ -51,7 +51,7 @@
                         <td><a href="{{route('createMemberToBoard',$board->id)}}" class="item-answer mlg-15" title="اضافه کردن اعضا"></a></td>
                         <td><a href="{{route('membersBoard',$board->id)}}" class="item-eye mlg-15" title="مشاهده اعضا"></a></td>
                         <td>@lang($board->visibility)</td>
-                        <td>{{$board->order}}</td>
+                        <td>{{$board->position}}</td>
                         <td>
                             <form action="{{ route('boards.destroy', $board->id) }}" method="POST" style="display:inline;">
                                 @csrf

@@ -59,7 +59,7 @@ class ProjectController extends Controller
         $validated = $request->validated();
         $media = MediaFileService::publicUpload($request->file('file'));
         $validated['file_id'] = $media->id;
-        $this->projectService->storeProject($validated,$notifier,$media->id);
+        $this->projectService->storeProject($validated,$notifier,$media->id,auth()->user());
         return redirect()->route('projects.index');
     }
 

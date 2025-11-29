@@ -2,7 +2,9 @@
 
 namespace Web\Category\Services;
 
+use Illuminate\Support\Facades\DB;
 use Web\Category\Contracts\CategoryInterface;
+use Web\Category\Models\Category;
 
 class CategoryService
 {
@@ -13,26 +15,18 @@ class CategoryService
         $this->categoryRepo = $categoryRepo;
     }
 
-    public function storeCategory($request)
+    public function storeCategory(array $data)
     {
-        $data = [
-            "title" => $request->title,
-            "slug" => $request->slug,
-        ];
-
-        return $this->categoryRepo->store($data);
+        DB::transaction(function () use ($data){
+            return $this->categoryRepo->store($data);
+        });
     }
 
-    public function updateCategory($request,$id)
+    public function updateCategory(array $data,Category $category)
     {
-        $category = $this->categoryRepo->findById($id);
-
-        $data = [
-            "title" => $request->filled('title') ? $request->title : $category->title,
-            "slug" => $request->filled('slug') ? $request->slug : $category->slug,
-        ];
-
-        return $this->categoryRepo->update($data,$id);
+        DB::transaction(function () use ($data,$category){
+            return $this->categoryRepo->update($data,$category->id);
+        });
     }
 
     public function deleteCategory($id)

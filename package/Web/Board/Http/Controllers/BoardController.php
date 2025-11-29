@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Web\Board\Http\Requests\BoardRequest;
 use Web\Board\Models\Board;
-use Web\Board\Repositories\BoardRepositories;
+use Web\Board\Repositories\BoardRepository;
 use Web\Board\Services\BoardService;
 use Web\Project\Services\ProjectService;
 use Web\User\Models\User;
@@ -17,9 +17,9 @@ class BoardController extends Controller
     protected $projectService;
     protected $boardService;
 
-    public function __construct(BoardRepositories $boardRepo,
-                                BoardService $boardService,
-                                ProjectService $projectService)
+    public function __construct(BoardRepository $boardRepo,
+                                BoardService    $boardService,
+                                ProjectService  $projectService)
     {
         $this->boardRepo = $boardRepo;
         $this->boardService = $boardService;
@@ -29,7 +29,7 @@ class BoardController extends Controller
     public function index()
     {
         $this->authorize('index',Board::class);
-        $boards = $this->boardService->getAllBoardForUser(auth()->user());
+        $boards = $this->boardRepo->getAllBoardForUser(auth()->user());
         return view('Board::panel.index',compact('boards'));
     }
 
@@ -42,7 +42,7 @@ class BoardController extends Controller
 
     public function show($id)
     {
-        $board = $this->boardRepo->findById($id);
+        $board = $this->boardRepo->findBoardWithProject($id);
         $this->authorize('view',$board);
         return view('Board::panel.show',compact('board'));
     }
@@ -50,22 +50,22 @@ class BoardController extends Controller
     public function store(BoardRequest $request)
     {
         $this->authorize('store',Board::class);
-        $this->boardService->storeBoard($request);
+        $this->boardService->storeBoard($request->validated(),auth()->user());
         return redirect()->route('boards.index');
     }
 
     public function edit($id)
     {
-        $board = $this->boardRepo->findById($id);
+        $board = $this->boardRepo->findBoardWithProject($id);
         $this->authorize('edit',$board);
         $projects =$this->projectService->getAllProjectForUser(auth()->user());
         return view('Board::panel.edit',compact('board','projects'));
     }
 
-    public function update(Request $request,Board $board)
+    public function update(BoardRequest $request,Board $board)
     {
         $this->authorize('update',$board);
-        $this->boardService->updateBoard($request,$board->id);
+        $this->boardService->updateBoard($request->validated(),$board);
         return redirect()->route('boards.index');
     }
 
@@ -92,7 +92,7 @@ class BoardController extends Controller
 
     public function members($boardId)
     {
-        $board = $this->boardRepo->findById($boardId);
+        $board = $this->boardRepo->findBoardWithProject($boardId);
         $this->authorize('members',$board);
         $members = $this->boardService->getBoardMembers($boardId);
         return view('Board::members.index',compact('members','board'));
@@ -100,7 +100,7 @@ class BoardController extends Controller
 
     public function createMemberToBoard($boardId)
     {
-        $board = $this->boardRepo->findById($boardId);
+        $board = $this->boardRepo->findBoardWithProject($boardId);
         $this->authorize('createMemberToBoard',$board);
         $users = User::all();
         return view('Board::members.create',compact('board','users'));

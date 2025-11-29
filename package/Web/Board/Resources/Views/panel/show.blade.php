@@ -22,7 +22,7 @@
                         <td>{{$board->name}}</td>
                         <td>{{$board->project->name}}</td>
                         <td>@lang($board->visibility)</td>
-                        <td>{{$board->order}}</td>
+                        <td>{{$board->position}}</td>
                     </tr>
 
                 </tbody>

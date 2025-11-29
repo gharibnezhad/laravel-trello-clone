@@ -4,6 +4,8 @@ namespace Web\Category\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Web\Category\Http\Requests\CreateCategoryRequest;
+use Web\Category\Http\Requests\UpdateCategoryRequest;
 use Web\Category\Models\Category;
 use Web\Category\Repositories\CategoryRepository;
 use Web\Category\Services\CategoryService;
@@ -32,10 +34,10 @@ class CategoryController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
         $this->authorize('index',Category::class);
-        $this->categoryService->storeCategory($request);
+        $this->categoryService->storeCategory($request->validated());
         return redirect()->route('categories.index');
     }
 
@@ -47,10 +49,9 @@ class CategoryController extends Controller
     }
 
 
-    public function update(Request $request,Category $category)
+    public function update(UpdateCategoryRequest $request,Category $category)
     {
-        $this->authorize('index',$category);
-        $this->categoryService->updateCategory($request,$category->id);
+        $this->categoryService->updateCategory($request->validated(),$category);
         return redirect()->route('categories.index');
     }
 

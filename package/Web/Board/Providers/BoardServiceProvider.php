@@ -10,7 +10,7 @@ use Web\Board\Database\Seeder\BoardSeeder;
 use Web\Board\Contracts\BoardInterface;
 use Web\Board\Models\Board;
 use Web\Board\Policies\BoardPolicy;
-use Web\Board\Repositories\BoardRepositories;
+use Web\Board\Repositories\BoardRepository;
 use Web\RolePermissions\Models\Permission;
 
 class BoardServiceProvider extends ServiceProvider
@@ -23,7 +23,7 @@ class BoardServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views','Board');
         $this->loadJsonTranslationsFrom(__DIR__.'/../Resources/lang');
         DatabaseSeeder::$seeders[] = BoardSeeder::class;
-        $this->app->bind(BoardInterface::class,BoardRepositories::class);
+        $this->app->bind(BoardInterface::class,BoardRepository::class);
         Gate::policy(Board::class,BoardPolicy::class);
     }
 

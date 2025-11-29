@@ -3,7 +3,7 @@ namespace Web\TaskList\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Web\Board\Repositories\BoardRepositories;
+use Web\Board\Repositories\BoardRepository;
 use Web\TaskList\Models\TaskList;
 use Web\TaskList\Services\TaskListService;
 
@@ -12,7 +12,7 @@ class TaskListController extends Controller
     public $listService;
     public $boardRepo;
 
-    public function __construct(TaskListService $listService,BoardRepositories $boardRepo)
+    public function __construct(TaskListService $listService, BoardRepository $boardRepo)
     {
         $this->listService = $listService;
         $this->boardRepo = $boardRepo;
@@ -43,7 +43,7 @@ class TaskListController extends Controller
     {
         $taskList=$this->listService->findTaskList($id);
         $this->authorize('edit',$taskList);
-        $boards = $this->boardRepo->getAllBoards();
+        $boards = $this->boardRepo->getBoardsWithProject();
         return view('TaskList::Panel.edit',compact('taskList','boards'));
     }
 

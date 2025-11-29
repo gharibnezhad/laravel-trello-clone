@@ -9,23 +9,23 @@
             <div class="col-12">
                 <form action="{{route('boards.store')}}" method="post" class="padding-30">
                     @csrf
-                    <input type="text" name="name"  class="text" placeholder="نام برد" required>
-                    <select name="project_id" required>
+                    <x-input type="text" name="name"  class="text" placeholder="نام برد"/>
+                    <x-select name="project_id">
                         <option value="">انتخاب پروژه</option>
                         @foreach($projects as $project)
 
                             <option value="{{$project->id}}">{{$project->name}}</option>
                         @endforeach
-                    </select>
+                    </x-select>
 
-                    <select name="visibility" required>
+                    <x-select name="visibility">
                         <option value="">وضعیت مشاهده</option>
                         @foreach(\Web\Board\Models\Board::getVisibilities() as $visibility)
 
                             <option value="{{$visibility}}">@lang($visibility)</option>
                         @endforeach
-                    </select>
-                    <input type="number" name="order"  class="text" placeholder="ترتیب نمایش" required>
+                    </x-select>
+                    <x-input type="number" name="position"  class="text" placeholder="ترتیب نمایش"/>
 
                     <button class="btn btn-webamooz_net">ایجاد برد</button>
                 </form>
