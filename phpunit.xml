@@ -11,10 +11,10 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
-        <testsuite name="Unit">
+        <testsuite name="User Unit">
             <directory suffix="Test.php">./package/Web/User/tests/Unit</directory>
         </testsuite>
-        <testsuite name="Feature">
+        <testsuite name="User Feature">
             <directory suffix="Test.php">./package/Web/User/tests/Feature</directory>
         </testsuite>
     </testsuites>

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Web\Board\Repositories\BoardRepository;
 use Web\Board\Services\BoardService;
+use Web\Task\Http\Requests\CreateTaskRequest;
+use Web\Task\Http\Requests\UpdateTaskRequest;
 use Web\Task\Models\Task;
 use Web\Task\Repositories\TaskRepository;
 use Web\Task\Services\TaskService;
@@ -42,38 +44,37 @@ class TaskController extends Controller
 
     public function create()
     {
-        $this->authorize('create',Task::class);
-        $boards = $this->boardService->getAllBoardForUser(auth()->user());
+        $this->authorize('index',Task::class);
+        $boards = $this->boardRepo->getAllBoardForUser(auth()->user());
         return view('Tasks::Panel.create',compact('boards'));
     }
 
 
-
-    public function store(Request $request)
+    public function store(CreateTaskRequest $request)
     {
-        $this->authorize('create',Task::class);
-        $this->taskService->store($request);
+        $this->authorize('index',Task::class);
+        $this->taskService->store($request->validated(),auth()->user());
         return redirect()->route('tasks.index');
     }
 
     public function edit(Task $task)
     {
         $task = $this->taskRepo->findById($task->id);
-        $this->authorize('update',$task);
+        $this->authorize('edit',$task);
         $boards = $this->boardRepo->getBoardsWithProject();
         return view('Tasks::Panel.edit',compact('task','boards'));
     }
 
-    public function update(Request $request,Task $task)
+    public function update(UpdateTaskRequest $request,Task $task)
     {
-        $this->authorize('update',$task);
-        $this->taskService->update($request,$task->id);
+        $this->authorize('edit',$task);
+        $this->taskService->update($task,$request->validated());
         return redirect()->route('tasks.index');
     }
 
     public function destroy(Task $task)
     {
-        $this->authorize('delete',$task);
+        $this->authorize('edit',$task);
         $this->taskService->delete($task->id);
         return redirect()->route('tasks.index');
     }
@@ -82,32 +83,32 @@ class TaskController extends Controller
      *  🔹 MEMBER MANAGEMENT SECTION
      * ---------------------------*/
 
-    public function members($taskId)
+    public function members(Task $task)
     {
-        $this->authorize('index',Task::class);
-        $task = $this->taskRepo->findById($taskId);
-        $members = $this->taskService->getTaskMembers($taskId);
+        $this->authorize('members',$task);
+        $task = $this->taskRepo->findById($task->id);
+        $members = $this->taskService->getTaskMembers($task->id);
         return view('Tasks::members.index',compact('task','members'));
     }
 
-    public function createMemberToTask($taskId)
+    public function createMemberToTask(Task $task)
     {
-        $task = $this->taskRepo->findById($taskId);
-        $this->authorize('update',$task);
+        $task = $this->taskRepo->findById($task->id);
+        $this->authorize('members',$task);
         $users = User::all();
         return view('Tasks::members.create',compact('task','users'));
     }
 
     public function addMemberToTask(Request $request,Task $task)
     {
-        $this->authorize('update',$task);
+        $this->authorize('members',$task);
         $this->taskService->addUserToTask($task->id,$request->user_id);
         return redirect()->route('tasks.index');
     }
 
     public function removeMemberToTask(Task $task,$userId)
     {
-        $this->authorize('update',$task);
+        $this->authorize('members',$task);
         $this->taskService->removeMemberToTask($task->id,$userId);
         return redirect()->route('tasks.index');
     }
@@ -116,10 +117,9 @@ class TaskController extends Controller
      *  🔹 UTILS
      * ---------------------------*/
 
-    public function getByBoard($boardId)
+    public function getTaskListsForBoard($boardId)
     {
-        $board = $this->boardRepo->findById($boardId);
-        return response()->json($board->taskLists()->select('id', 'name')->get());
+        return response()->json($this->taskService->getTaskListsForBoard($boardId));
     }
 
 }

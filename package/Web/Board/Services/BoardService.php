@@ -122,4 +122,9 @@ class BoardService
         return $this->memberService->removeMember('board',$boardId,$userId);
     }
 
+    public function findBoardWithTaskLists($boardId)
+    {
+        return $this->boardRepo->findBoardWithTaskLists($boardId);
+    }
+
 }

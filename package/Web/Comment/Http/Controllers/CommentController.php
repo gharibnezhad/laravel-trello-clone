@@ -20,12 +20,14 @@ class CommentController extends Controller
 
     public function index()
     {
+        $this->authorize('index',Comment::class);
         $comments = $this->commentRepo->getAllComments();
         return view('Comments::panel.index',compact('comments'));
     }
 
     public function show(Comment $comment)
     {
+        $this->authorize('index',Comment::class);
         $comment = $this->commentRepo->findById($comment->id);
         return view('Comments::panel.show',compact('comment'));
     }
@@ -33,6 +35,7 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
+        $this->authorize('index',Comment::class);
         return $this->commentService->delete($comment->id);
     }
 }

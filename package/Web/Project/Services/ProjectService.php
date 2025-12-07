@@ -139,15 +139,12 @@ class ProjectService
 
     public function getAllProjectForUser(User $user)
     {
-        return Project::whereHas('users',function($query) use ($user){
-            $query->where('users.id',$user->id);
-        })->get();
+        return $this->projectRepo->getAllProjectForUser($user);
     }
 
-    public function findProjectWithCategory($id)
+    public function getProject($id)
     {
-        $project = Project::with('category')->findOrFail($id);
-        return $project;
+        return $this->projectRepo->findProjectWithCategory($id);
     }
 
 }

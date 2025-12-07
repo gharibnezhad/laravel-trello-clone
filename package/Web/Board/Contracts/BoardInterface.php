@@ -21,4 +21,6 @@ interface BoardInterface
 
     public function getAllBoardForUser(User $user);
 
+    public function findBoardWithTaskLists(int $boardId);
+
 }

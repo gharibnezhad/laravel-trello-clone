@@ -4,20 +4,25 @@ namespace Web\Project\Repositories;
 
 use Web\Project\Contracts\ProjectInterface;
 use Web\Project\Models\Project;
-use Web\Project\Notifications\ProjectCreatedNotification;
+use Web\User\Models\User;
 
 class ProjectRepository implements ProjectInterface
 {
 
-    public function findById($id)
+    public function findProjectWithCategory($id)
     {
-        return Project::findOrFail($id);
+        $project = Project::with('category')->findOrFail($id);
+        return $project;
     }
 
-    public function getAllProject()
+    public function getAllProjectForUser(User $user)
     {
-        return Project::all();
+        return Project::whereHas('users',function($query) use ($user){
+            $query->where('users.id',$user->id);
+        })->with(['category'])
+            ->get();
     }
+
 
     public function store($data)
     {
@@ -44,4 +49,6 @@ class ProjectRepository implements ProjectInterface
 
         return $project;
     }
+
+
 }

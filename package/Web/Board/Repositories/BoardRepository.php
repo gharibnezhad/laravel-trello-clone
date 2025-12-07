@@ -47,4 +47,11 @@ class BoardRepository implements BoardInterface
             $query->where('users.id',$user->id);
         })->with('project')->get();
     }
+
+    public function findBoardWithTaskLists(int $boardId)
+    {
+        return Board::with(['taskLists'=>function ($q) {
+            $q->select('id','name','board_id');
+        }])->findOrFail($boardId);
+    }
 }

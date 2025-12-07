@@ -7,7 +7,7 @@ Route::group(["namespace" => "Web\Task\Http\Controllers",
     "middleware" => ['web', 'auth', 'verified']], function () {
 
     Route::resource('tasks', 'TaskController');
-    Route::get('/taskLists/by-board/{board}', [TaskController::class, 'getByBoard']);
+    Route::get('/taskLists/by-board/{board}', [TaskController::class, 'getTaskListsForBoard']);
 
 
     Route::get('membersTask/{task}',[TaskController::class,'members'])->name('membersTask');
@@ -17,5 +17,6 @@ Route::group(["namespace" => "Web\Task\Http\Controllers",
         ->name('addMembersTask');
     Route::delete('removeUserToTask/{task}/{userId}',[TaskController::class,'removeMemberToTask'])
         ->name('removeUserToTask');
+
 
 });

@@ -51,6 +51,7 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request,Category $category)
     {
+        $this->authorize('index',$category);
         $this->categoryService->updateCategory($request->validated(),$category);
         return redirect()->route('categories.index');
     }

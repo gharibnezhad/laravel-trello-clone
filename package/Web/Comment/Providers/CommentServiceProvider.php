@@ -2,8 +2,11 @@
 namespace  Web\Comment\Providers;
 
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Web\Comment\Contracts\CommentInterface;
+use Web\Comment\Models\Comment;
+use Web\Comment\Policies\CommentPolicy;
 use Web\Comment\Repositories\CommentRepository;
 use Web\RolePermissions\Models\Permission;
 
@@ -16,6 +19,7 @@ class CommentServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../Database/migrations');
         $this->loadViewsFrom(__DIR__ . '/../Resources/Views','Comments');
         $this->app->bind(CommentInterface::class,CommentRepository::class);
+        Gate::policy(Comment::class,CommentPolicy::class);
     }
 
 

@@ -8,14 +8,14 @@ use Web\TaskList\Models\TaskList;
 class TaskListRepository implements TaskListInterface
 {
 
-    public function findById($id)
+    public function findTaskListWithBoard($id)
     {
-      return TaskList::findOrFail($id);
+      return TaskList::with('board')->findOrFail($id);
     }
 
-    public function getAllTaskList()
+    public function getTaskListWithBoard()
     {
-        return TaskList::paginate(5);
+        return TaskList::with('board')->paginate(5);
     }
 
     public function store(array $data)

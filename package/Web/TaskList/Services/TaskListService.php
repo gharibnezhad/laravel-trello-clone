@@ -1,6 +1,8 @@
 <?php
 namespace Web\TaskList\Services;
+use Illuminate\Support\Facades\DB;
 use Web\TaskList\Contracts\TaskListInterface;
+use Web\TaskList\Models\TaskList;
 
 class TaskListService
 {
@@ -10,36 +12,30 @@ class TaskListService
         $this->taskListRepo = $taskListRepo;
     }
 
-    public function findTaskList($id)
+    public function findTaskListWithBoard($id)
     {
-        return $this->taskListRepo->findById($id);
+        return $this->taskListRepo->findTaskListWithBoard($id);
     }
 
-    public function getAllTaskLists()
+    public function getTaskListWithBoard()
     {
-        return $this->taskListRepo->getAllTaskList();
+        return $this->taskListRepo->getTaskListWithBoard();
     }
 
-    public function storeTaskList($request)
-    {
-        $data = [
-            'name' => $request->name,
-            'position' => $request->position,
-            'board_id' => $request->board_id,
-        ];
 
-        return $this->taskListRepo->store($data);
+
+    public function storeTaskList(array $data)
+    {
+        DB::transaction(function ()use ($data){
+            return $this->taskListRepo->store($data);
+        });
     }
 
-    public function updateTaskList($request,$id)
+    public function updateTaskList(TaskList $taskList,array $data)
     {
-        $data = [
-            'name' => $request->name,
-            'position' => $request->position,
-            'board_id' => $request->board_id,
-        ];
-
-        return $this->taskListRepo->update($data,$id);
+        DB::transaction(function ()use ($data,$taskList){
+            return $this->taskListRepo->update($data,$taskList->id);
+        });
     }
 
     public function delete($taskList)

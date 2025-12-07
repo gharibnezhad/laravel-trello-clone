@@ -3,6 +3,8 @@
 namespace Web\Task\Services;
 
 
+use Illuminate\Support\Facades\DB;
+use Web\Board\Repositories\BoardRepository;
 use Web\Member\Services\MemberService;
 use Web\RolePermissions\Models\Role;
 use Web\Task\Contracts\TaskInterface;
@@ -14,42 +16,48 @@ class TaskService
 
     protected $taskRepo;
     protected $memberService;
+    protected $boardService;
 
-    public function __construct(TaskInterface $taskRepo,MemberService $memberService)
+    public function __construct(
+        TaskInterface $taskRepo,
+        MemberService $memberService,
+        BoardRepository $boardService)
     {
         $this->taskRepo = $taskRepo;
         $this->memberService = $memberService;
+        $this->boardService = $boardService;
     }
 
-    public function store($request)
+    private function mapTaskData(array $data)
     {
-        $user = auth()->user();
-        $data = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'task_list_id' => $request->task_list_id,
-            'due_time' => $request->due_time,
-            'priority' => $request->priority,
-            'order' => $request->order,
+        return [
+            'task_list_id' => $data['task_list_id'],
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'due_time' => $data['due_time'],
+            'order' => $data['order'],
+            'priority' => $data['priority'],
         ];
-       $tasks = $this->taskRepo->store($data);
-       $user->tasks()->attach($tasks->id,['role_id'=>Role::OWNER]);
-
-       return $tasks;
     }
 
-    public function update($request,$taskId)
+    public function store($data,User $user)
     {
-        $task = $this->taskRepo->findById($taskId);
-        $data =  [
-            'title' => $request->filled('title') ? $request->title : $task->title,
-            'description' => $request->filled('description') ? $request->description : $task->description,
-            'task_list_id' => $request->filled('task_list_id') ? $request->task_list_id : $task->task_list_id,
-            'due_time' => $request->filled('due_time') ? $request->due_time : $task->due_time,
-            'priority' => $request->filled('priority') ? $request->priority : $task->priority,
-            'order' => $request->filled('order') ? $request->order : $task->order,
-        ];
-       return $this->taskRepo->update($data,$taskId);
+       return DB::transaction(function ()use ($data,$user){
+            $taskData = $this->mapTaskData($data);
+            $task = $this->taskRepo->store($taskData);
+            $user->tasks()->attach($task->id,['role_id'=>Role::OWNER]);
+            return $task;
+        });
+
+    }
+
+    public function update(Task $task,$data)
+    {
+     return DB::transaction(function () use ($data,$task){
+         $taskData = $this->mapTaskData($data);
+         return $this->taskRepo->update($taskData,$task->id);
+     });
+
     }
 
     public function getTaskMembers($taskId)
@@ -79,5 +87,10 @@ class TaskService
         })->with(['taskList.board'])->get();
     }
 
+    public function getTaskListsForBoard($boardId)
+    {
+        $board = $this->boardService->findBoardWithTaskLists($boardId);
+        return $board->taskLists;
+    }
 
 }

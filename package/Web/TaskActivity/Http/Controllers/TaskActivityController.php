@@ -24,10 +24,10 @@ class TaskActivityController extends Controller
         return view('TaskActivities::index',compact('taskActivities'));
     }
 
-    public function destroy($id)
+    public function destroy(TaskActivity $taskActivity)
     {
-        $this->authorize('index',TaskActivity::class);
-        $this->activitiyService->delete($id);
+        $this->authorize('index',$taskActivity);
+        $this->activitiyService->delete($taskActivity->id);
         return redirect()->route('taskActivities.index');
     }
 }

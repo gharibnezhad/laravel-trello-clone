@@ -5,9 +5,9 @@ namespace Web\TaskList\Contracts;
 interface TaskListInterface
 {
 
-    public function findById($id);
+    public function findTaskListWithBoard($id);
 
-    public function getAllTaskList();
+    public function getTaskListWithBoard();
 
     public function store(array $data);
 

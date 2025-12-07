@@ -3,8 +3,6 @@ namespace Web\Project\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Web\Category\Models\Category;
 use Web\Category\Repositories\CategoryRepository;
 use Web\Media\Service\MediaFileService;
 use Web\Notification\Services\NotificationService;
@@ -22,11 +20,8 @@ class ProjectController extends Controller
     public $categorytRepo;
     protected $projectService;
 
-    public function __construct(ProjectRepository $projectRepo,
-                                CategoryRepository $categoryRepo,
-                                ProjectService $projectService)
+    public function __construct(CategoryRepository $categoryRepo, ProjectService $projectService)
     {
-        $this->projectRepo = $projectRepo;
         $this->categorytRepo = $categoryRepo;
         $this->projectService = $projectService;
     }
@@ -41,7 +36,7 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $project = $this->projectService->findProjectWithCategory($id);
+        $project = $this->projectService->getProject($id);
         $this->authorize('show',$project);
         return view('Project::show',compact('project'));
     }
@@ -65,7 +60,7 @@ class ProjectController extends Controller
 
     public function edit($id)
     {
-        $project = $this->projectRepo->findById($id);
+        $project = $this->projectService->getProject($id);;
         $this->authorize('edit',$project);
         $categories = $this->categorytRepo->getAllCategory();
         return view('Project::edit',compact('project','categories'));
@@ -88,7 +83,7 @@ class ProjectController extends Controller
 
     public function members($projectId)
     {
-        $project = $this->projectRepo->findById($projectId);
+        $project = $this->projectService->getProject($projectId);
         $this->authorize('members',$project);
         $members = $this->projectService->getProjectMembers($projectId);
         return view('Project::members.index',compact('project','members'));
@@ -97,7 +92,7 @@ class ProjectController extends Controller
 
     public function createMemberToProject($projectId)
     {
-        $project = $this->projectRepo->findById($projectId);
+        $project = $this->projectService->getProject($projectId);
         $this->authorize('members',$project);
         $users = User::all();
         return view('Project::members.create',compact('project','users'));

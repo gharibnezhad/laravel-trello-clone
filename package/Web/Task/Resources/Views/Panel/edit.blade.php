@@ -10,31 +10,31 @@
                 <form action="{{route('tasks.update',$task->id)}}" method="post" class="padding-30">
                     @csrf
                     @method('PATCH')
-                    <select name="board_id" id="board-select">
+                    <x-select name="board_id" id="board-select">
                         <option value="">انتخاب برد</option>
                         @foreach($boards as $board)
                             <option value="{{ $board->id}}"{{old('board_id',$task->taskList->board->id)
                          == $board->id ? 'selected' : ''}}>{{ $board->name }}</option>
                         @endforeach
-                    </select>
+                    </x-select>
 
-                    <select name="task_list_id" id="taskList-select">
+                    <x-select name="task_list_id" id="taskList-select">
                         <option value=""> انتخاب تسک لیست</option>
-                    </select>
-                    <input type="text" name="title" class="text" placeholder="عنوان تسک"
-                             value="{{old('title', $task->title)}}" />
-                    <textarea name="description" placeholder="توضیحات تسک" class="text h"
-                                >{{old('description',$task->description)}}</textarea>
+                    </x-select>
+                    <x-input type="text" name="title" class="text" placeholder="عنوان تسک"
+                             value="{{$task->title}}" />
+                    <x-textarea name="description" placeholder="توضیحات تسک" class="text h"
+                                value="{{$task->description}}"></x-textarea>
                     <label for="due_time">زمان تحویل تسک</label>
                     @php
                         $dueValue = old('due_time') ?:
                         ($task->due_time ? \Carbon\Carbon::parse($task->due_time)
                         ->format('Y-m-d\TH:i') : null);
                     @endphp
-                    <input type="datetime-local" name="due_time" class="text text-left "
+                    <x-input type="datetime-local" name="due_time" class="text text-left "
                              value="{{$dueValue}}" placeholder="موعد تحویل"/>
-                    <input type="number" name="order" class="text" value="{{$task->order}}" placeholder="ترتیب نمایش"/>
-                    <select name="priority">
+                    <x-input type="number" name="order" class="text" value="{{$task->order}}" placeholder="ترتیب نمایش"/>
+                    <x-select name="priority">
                         <option value="">اولویت</option>
                         @foreach(\Web\Task\Models\Task::$priority as $priority)
 
@@ -42,7 +42,7 @@
                                 {{ old('priority', $task->priority) == $priority ? 'selected' : '' }}
                             >{{$priority}}</option>
                         @endforeach
-                    </select>
+                    </x-select>
 
                     <button class="btn btn-webamooz_net">ایجاد تسک</button>
                 </form>

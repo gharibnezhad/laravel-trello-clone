@@ -10,18 +10,18 @@
                 <form action="{{route('tasks.store')}}" method="post" class="padding-30">
                     @csrf
 
-                    <select  id="board-select">
+                    <x-select name="board_id"  id="board-select">
                         <option value="">انتخاب برد</option>
                         @foreach($boards as $board)
                             <option value="{{ $board->id }}">{{ $board->name }}</option>
                         @endforeach
-                    </select>
+                    </x-select>
 
-                    <select name="task_list_id" id="taskList-select">
+                    <x-select name="task_list_id" id="taskList-select">
                         <option value=""> انتخاب تسک لیست</option>
-                    </select>
+                    </x-select>
                     <x-input type="text" name="title"  class="text" placeholder="عنوان تسک" />
-                    <textarea name="description" placeholder="توضیحات تسک" class="text h" ></textarea>
+                    <x-textarea name="description" placeholder="توضیحات تسک" class="text h" ></x-textarea>
                     <label for="due_time">زمان تحویل تسک</label>
                     <x-input type="datetime-local" name="due_time" class="text text-left " placeholder="موعد تحویل"/>
                     <x-input type="number" name="order"  class="text" placeholder="ترتیب نمایش" />
