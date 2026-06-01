@@ -28,7 +28,7 @@ class UserService
 
     public function updateUser($request, $userId)
     {
-        $user = User::findOrFail($userId);
+        $user = $this->userRepo->findById($userId);
 
         $data = [
             'name' => $request->name,
@@ -51,7 +51,7 @@ class UserService
 
     public function verifyEmail($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userRepo->findById($id);
         return $user->markEmailAsVerified();
     }
 
@@ -89,6 +89,13 @@ class UserService
         $user->image_id = $media->id;
         $user->save();
         return $user;
+    }
+
+
+    public function getProfile(): User
+    {
+        $user = auth()->user();
+        return $this->userRepo->getProfileWithRelations($user);
     }
 
 

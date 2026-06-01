@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Web\User\Http\Controllers\ProfileController;
 use Web\User\Http\Controllers\UserController;
@@ -32,6 +33,7 @@ Route::middleware('web')->group(function () {
       Route::get('users/profile/{id}/edit',[UserController::class,'editProfile'])->name('users.editProfile');
       Route::patch('users/profile/{user}/update',[UserController::class,'updateProfile'])->name('users.updateProfile');
       Route::resource('users',UserController::class);
+
 
     });
 

@@ -58,7 +58,7 @@
 
         <h2 style="margin-bottom: 15px; font-size: 20px; font-weight: bold;">تسک های من</h2>
 
-        @if($user->projects->count() > 0)
+        @if($user->tasks->count() > 0)
             <div class="projects-board">
                 @php
                     $colors = ['bg-blue','bg-green','bg-purple','bg-pink','bg-yellow','bg-indigo'];
@@ -67,6 +67,14 @@
                 @foreach($user->tasks as $index => $task)
                     <div class="project-card {{ $colors[$index % count($colors)] }}">
                         <h3>{{ $task->title }}</h3>
+
+
+                        @if($task->taskList?->board)
+                            <span style="font-size:12px; opacity:0.85;">
+                          📋 {{ $task->taskList->board->name }}
+                        </span>
+                        @endif
+
                         <p>{{ Str::limit($task->description, 80) }}</p>
                         <a href="{{ route('tasks.show', $task->id) }}" class="project-link">مشاهده تسک →</a>
                     </div>

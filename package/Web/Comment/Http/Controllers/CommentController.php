@@ -3,32 +3,30 @@
 namespace Web\Comment\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Web\Comment\Models\Comment;
-use Web\Comment\Repositories\CommentRepository;
 use Web\Comment\Services\CommentService;
 
 
 class CommentController extends Controller
 {
-    protected $commentRepo;
+
     protected $commentService;
 
-    public function __construct(CommentRepository $commentRepo,CommentService $commentService)
+    public function __construct(CommentService $commentService)
     {
-        $this->commentRepo = $commentRepo;
         $this->commentService = $commentService;
     }
 
     public function index()
     {
         $this->authorize('index',Comment::class);
-        $comments = $this->commentRepo->getAllComments();
+        $comments = $this->commentService->getCommentList();
         return view('Comments::panel.index',compact('comments'));
     }
 
     public function show(Comment $comment)
     {
         $this->authorize('index',Comment::class);
-        $comment = $this->commentRepo->findById($comment->id);
+        $comment = $this->commentService->getComment($comment->id);
         return view('Comments::panel.show',compact('comment'));
     }
 

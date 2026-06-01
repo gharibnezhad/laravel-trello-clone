@@ -29,4 +29,9 @@ class UserRepository implements UserInterface
         $user = User::findOrFail($id);
         return $user->delete();
     }
+
+    public function getProfileWithRelations(User $user): User
+    {
+        return $user->load(['projects', 'tasks.taskList.board']);
+    }
 }

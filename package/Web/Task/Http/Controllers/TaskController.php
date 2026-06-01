@@ -42,6 +42,11 @@ class TaskController extends Controller
         return view('Tasks::Panel.index',compact('tasks'));
     }
 
+//    public function show($id)
+//    {
+//        $task = $this->taskService->
+//    }
+
     public function create()
     {
         $this->authorize('index',Task::class);

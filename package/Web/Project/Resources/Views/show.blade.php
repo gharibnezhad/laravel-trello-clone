@@ -53,24 +53,29 @@
                     <h2 class="text-3xl font-bold text-text-primary-light dark:text-text-primary-dark">جزییات پروژه</h2>
                 </div>
 
-                <div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg
+                p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                     <div class="space-y-4">
-                        <h3 class="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">عکس پروژه</h3>
+                        <h3 class="text-sm font-medium text-text-secondary-light
+                        dark:text-text-secondary-dark">عکس پروژه</h3>
                         <img src="{{$project->media->thumb}}">
                     </div>
                     <div class="space-y-6">
                         <div>
                             <h3 class="text-sm font-medium text-primary-700 dark:text-primary-300">نام پروژه</h3>
-                            <p class="mt-1 text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">{{$project->name}}</p>
+                            <p class="mt-1 text-2xl font-bold text-text-primary-light
+                            dark:text-text-primary-dark">{{$project->name}}</p>
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-primary-700 dark:text-primary-300">دسته بندی</h3>
-                            <p class="mt-1 text-lg text-text-primary-light dark:text-text-primary-dark">{{$project->category->title}}</p>
+                            <p class="mt-1 text-lg text-text-primary-light
+                            dark:text-text-primary-dark">{{$project->category->title}}</p>
 
                             </div>
                             <div>
                                 <h3 class="text-sm font-medium text-primary-700 dark:text-primary-300">توضیجات</h3>
-                                <p class="mt-1 text-base text-text-secondary-light dark:text-text-secondary-dark">{{$project->description}}</p>
+                                <p class="mt-1 text-base text-text-secondary-light
+                                dark:text-text-secondary-dark">{{$project->description}}</p>
                             </div>
                         </div>
                     </div>

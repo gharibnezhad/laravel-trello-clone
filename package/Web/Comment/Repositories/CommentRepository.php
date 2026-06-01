@@ -14,10 +14,10 @@ class CommentRepository implements CommentInterface
         return Comment::with('user','child.user')->findOrFail($id);
     }
 
-    public function getAllComments()
+    public function paginateWithUser(int $perPage=10)
     {
        return Comment::with('user')
-       ->orderByDesc('id')->paginate(10);
+       ->orderByDesc('id')->paginate($perPage);
     }
 
     public function getAllCommentForType(Model $model)

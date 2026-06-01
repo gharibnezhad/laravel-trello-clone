@@ -9,7 +9,7 @@ interface CommentInterface
 
     public function findById( int $id);
 
-    public function getAllComments();
+    public function paginateWithUser(int $perPage);
 
     public function getAllCommentForType(Model $model);
 

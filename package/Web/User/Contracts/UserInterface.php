@@ -16,5 +16,7 @@ interface UserInterface
 
     public function delete($id);
 
+    public function getProfileWithRelations(User $user): User;
+
 
 }

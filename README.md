@@ -1,66 +1,156 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Trello Clone
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modular Trello-like project management application built with Laravel.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project was developed as a personal learning and portfolio project to practice software architecture, 
+modular design, and backend development concepts using Laravel.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The application allows users to manage boards, task lists, tasks, categories, roles, permissions, 
+and media attachments.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
 
-## Learning Laravel
+* User Authentication (Laravel Sanctum)
+* Custom Role & Permission System
+* Project Boards
+* Task Lists
+* Task Management
+* Drag & Drop Task Movement
+* Categories
+* Media Uploads
+* Activity Logging (In Progress)
+* Modular Architecture
+* OTP-ready SMS Module
+* Configurable SMS Providers
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The project follows a modular architecture and includes:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Contracts Layer
+* Repository Layer
+* Service Layer
 
-## Laravel Sponsors
+The main goal of this architecture is to improve maintainability, reduce code duplication, 
+and separate business logic from data access logic.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Additional Components
 
-### Premium Partners
+### SMS Module
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+The project includes a configurable SMS module based on the Provider Pattern.
 
-## Contributing
+Currently supported providers:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Kavenegar SMS Provider
+- Log SMS Provider (for local development and testing)
 
-## Code of Conduct
+New providers can be added by implementing the SmsProviderInterface contract.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Modules
 
-## Security Vulnerabilities
+* User
+* ProjectBoard
+* Task
+* TaskList
+* RolePermission
+* Media
+* Category
+* Log (Under Development)
+* Sms
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Technologies
 
-## License
+* PHP
+* Laravel
+* MySQL
+* Blade
+* Laravel Sanctum
+* PHPUnit
+* Git
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Database Design
+
+The project uses:
+
+* Migrations
+* Seeders
+* Factories
+* One-to-Many Relationships
+* Many-to-Many Relationships
+* Pivot Tables
+
+## Testing
+
+Basic automated tests have been implemented for the User module using PHPUnit.
+
+## Screenshots
+
+### Login Page
+
+![Login](screenshots/login.png)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Project Board
+
+![Board](screenshots/board.png)
+
+### Role & Permission
+
+![RolePermission](screenshots/role-permission.png)
+
+## Installation
+
+```bash
+git clone <repository-url>
+
+cd project
+
+composer install
+
+cp .env.example .env
+
+php artisan key:generate
+
+php artisan migrate --seed
+
+php artisan serve
+```
+
+## Project Status
+
+This project is currently under active development.
+
+Some modules such as Activity Log are still in progress.
+
+## Purpose
+
+The primary goal of this project is to improve practical knowledge of Laravel, software architecture, 
+design patterns, testing, and backend development best practices.
+
+---
+
+## فارسی
+
+این پروژه یک نمونه مشابه Trello است که با Laravel توسعه داده شده
+و هدف اصلی آن تمرین معماری نرم‌افزار، توسعه ماژولار و پیاده‌سازی مفاهیم Backend به صورت عملی بوده است.
+
+### ویژگی‌ها
+
+* احراز هویت با Laravel Sanctum
+* مدیریت نقش و سطح دسترسی (پیاده‌سازی اختصاصی)
+* مدیریت Board ،TaskList و Task
+* Drag & Drop برای جابه‌جایی Taskها
+* مدیریت فایل‌ها از طریق Media Module
+* معماری ماژولار
+* Service Layer
+* Repository Layer
+* Contracts
+* تست اولیه برای بخشی از سیستم
+
+این پروژه همچنان در حال توسعه است و برخی بخش‌ها مانند Activity Log در حال تکمیل هستند.

@@ -66,9 +66,9 @@ class UserController extends Controller
 
     public function profile()
     {
-        $user = auth()->user();
-        $this->authorize('view',$user);
-        return view('User::Admin.profile',compact('user'));
+        $user = $this->userService->getProfile();
+        $this->authorize('view', $user);
+        return view('User::Admin.profile', compact('user'));
     }
 
     public function editProfile($id)

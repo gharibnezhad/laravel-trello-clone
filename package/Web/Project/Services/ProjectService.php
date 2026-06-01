@@ -3,14 +3,9 @@
 namespace Web\Project\Services;
 
 use Illuminate\Support\Facades\DB;
-use Web\Category\Models\Category;
 use Web\Export\Contracts\JsonExporterInterface;
 use Web\Export\Contracts\PdfExporterInterface;
-use Web\Export\Exporters\ProjectToJsonExporter;
-use Web\Export\Services\ProjectExportService;
-use Web\Export\Services\ProjectToPdfExportService;
 use Web\Media\Models\Media;
-use Web\Media\Service\DefaultFileService;
 use Web\Media\Service\MediaFileService;
 use Web\Member\Services\MemberService;
 use Web\Project\Contracts\ProjectInterface;
@@ -87,7 +82,7 @@ class ProjectService
 
     public function deleteProject($id)
     {
-        $project = $this->projectRepo->findById($id);
+        $project = $this->projectRepo->findProjectWithCategory($id);
         if ($project->media)
             $project->media->delete();
         $this->projectRepo->destroy($id);
@@ -102,7 +97,7 @@ class ProjectService
 
     public function exportPdf($id)
     {
-        $project = $this->projectRepo->findById($id);
+        $project = $this->projectRepo->findProjectWithCategory($id);
         return $this->pdfExportService->exportToPdf($project);
     }
 

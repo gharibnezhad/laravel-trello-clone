@@ -213,6 +213,7 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         \Web\Media\Providers\MediaServiceProvider::class,
         \Web\Comment\Providers\CommentServiceProvider::class,
+        \Web\Sms\Providers\SmsServiceProvider::class,
 
 
 
