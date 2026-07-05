@@ -3,6 +3,7 @@
 namespace Web\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Web\User\Rules\ValidationPassword;
 
 class UpdateProfileInformationRequest extends FormRequest
@@ -24,12 +25,12 @@ class UpdateProfileInformationRequest extends FormRequest
      */
     public function rules()
     {
-        $userId = $this->route('id');
+        $userId = $this->route('user')->id;
         return [
             "name" => "required|min:3|max:190",
-            "email" => "required|min:3|max:190|unique:users,email,{$userId}",
-            "username" => "nullable|min:3|max:190|unique:users,username,{$userId}",
-            "mobile" => "nullable|unique:users,mobile,{$userId}",
+            "email" => ['required','min:3','max:190',Rule::unique('users')->ignore($userId)],
+            "username" => ['nullable','min:3','max:190',Rule::unique('users')->ignore($userId)],
+            "mobile" => ['nullable','regex:/[0]{1}[0-9]{10}/',Rule::unique('users')->ignore($userId)],
             "password" => ['nullable',new ValidationPassword()]
         ];
     }

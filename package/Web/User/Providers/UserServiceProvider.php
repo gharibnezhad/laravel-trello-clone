@@ -10,10 +10,12 @@ use Illuminate\Support\ServiceProvider;
 use Web\RolePermissions\Models\Permission;
 use Web\User\Contracts\UserInterface;
 use Web\User\Database\Seeder\UserSeeder;
+use Web\User\Http\Middleware\EnsureProfilePasswordConfirmed;
 use Web\User\Http\Middleware\StoreUserIp;
 use Web\User\Models\User;
 use Web\User\Policies\UserPolicy;
 use Web\User\Repositories\UserRepository;
+use Web\User\Services\PasswordConfirmationService;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,7 @@ class UserServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../Routes/user-routes.php');
         $this->loadViewsFrom(__DIR__.'/../Resources/Views','User');
         $this->app->bind(UserInterface::class,UserRepository::class);
+        $this->app->singleton(PasswordConfirmationService::class);
 
 
         DatabaseSeeder::$seeders[] = UserSeeder::class;
@@ -56,6 +59,7 @@ class UserServiceProvider extends ServiceProvider
         ]);
 
         $this->app['router']->pushMiddlewareToGroup('web',StoreUserIp::class);
+        $this->app['router']->aliasMiddleware('auth.password.confirmed.at',EnsureProfilePasswordConfirmed::class);
 
     }
 }

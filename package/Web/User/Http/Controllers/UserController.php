@@ -5,9 +5,11 @@ namespace Web\User\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Web\RolePermissions\Repositories\RoleRepository;
+use Web\User\Http\Requests\ConfirmPasswordRequest;
 use Web\User\Http\Requests\UpdateProfileInformationRequest;
 use Web\User\Http\Requests\UpdateUserPhoto;
 use Web\User\Models\User;
+use Web\User\Services\PasswordConfirmationService;
 use Web\User\Services\UserService;
 
 class UserController extends Controller
@@ -79,11 +81,27 @@ class UserController extends Controller
     }
 
 
-    public function updateProfile(UpdateProfileInformationRequest $request,User $user)
+    public function updateProfile(
+        UpdateProfileInformationRequest $request,
+        User $user,
+        PasswordConfirmationService $confirmation
+    )
     {
         $this->authorize('updateProfile',$user);
        $this->userService->updateProfile($request,$user->id);
+        $confirmation->forget();
         return redirect()->route('users.profile');
+    }
+
+    public function confirmPassword(
+        ConfirmPasswordRequest $request,
+        PasswordConfirmationService $confirmation)
+    {
+        $confirmation->confirm();
+
+        return response()->json([
+            "success" => true
+        ]);
     }
 
     public function updatePhoto(UpdateUserPhoto $request)

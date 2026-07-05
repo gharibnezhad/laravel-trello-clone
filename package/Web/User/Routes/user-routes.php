@@ -31,7 +31,9 @@ Route::middleware('web')->group(function () {
       Route::get('users/profile',[UserController::class,'profile'])->name('users.profile');
       Route::post('users/photo',[UserController::class,'updatePhoto'])->name('users.photo');
       Route::get('users/profile/{id}/edit',[UserController::class,'editProfile'])->name('users.editProfile');
-      Route::patch('users/profile/{user}/update',[UserController::class,'updateProfile'])->name('users.updateProfile');
+      Route::patch('users/profile/{user}/update',[UserController::class,'updateProfile'])->name('users.updateProfile')
+          ->middleware('auth.password.confirmed.at');
+      Route::post('users/profile/confirm-password',[UserController::class,'confirmPassword'])->name('users.confirm-password');
       Route::resource('users',UserController::class);
 
 

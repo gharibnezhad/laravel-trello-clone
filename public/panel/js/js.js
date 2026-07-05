@@ -315,3 +315,59 @@ function updateConfirmationStatus(event, route, message, status, field = 'confir
     }
 }
 
+
+function registerProfilePasswordConfirmation() {
+
+    $(document).on('submit', '#profileForm', function (e) {
+
+        e.preventDefault();
+
+        $('#passwordModal').show();
+
+    });
+
+    $(document).on('click', '#confirmPasswordBtn', function () {
+
+        $.ajax({
+
+            url: $('#profileForm').data('confirm-url'),
+
+            type: 'POST',
+
+            data: {
+
+                current_password: $('#current_password').val(),
+
+                _token: $('meta[name="csrf-token"]').attr('content')
+
+            },
+
+            success: function () {
+
+                $('#passwordModal').hide();
+
+                document.getElementById('profileForm').submit();
+
+            },
+
+            error: function (xhr) {
+
+                $('#passwordError').text(
+                    xhr.responseJSON.errors.current_password[0]
+                );
+
+            }
+
+        });
+
+    });
+
+}
+
+$(document).ready(function () {
+
+    create_custom_dropdowns();
+
+    registerProfilePasswordConfirmation();
+
+});
