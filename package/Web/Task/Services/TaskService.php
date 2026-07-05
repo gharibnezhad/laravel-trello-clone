@@ -93,4 +93,10 @@ class TaskService
         return $board->taskLists;
     }
 
+    public function getTask($id): Task
+    {
+        $task = $this->taskRepo->findById($id);
+        return $this->taskRepo->getTaskWithRelations($task);
+    }
+
 }

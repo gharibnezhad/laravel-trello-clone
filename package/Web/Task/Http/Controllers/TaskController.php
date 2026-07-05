@@ -42,10 +42,11 @@ class TaskController extends Controller
         return view('Tasks::Panel.index',compact('tasks'));
     }
 
-//    public function show($id)
-//    {
-//        $task = $this->taskService->
-//    }
+    public function show($id)
+    {
+        $task = $this->taskService->getTask($id);
+        return view('Tasks::Panel.show',compact('task'));
+    }
 
     public function create()
     {

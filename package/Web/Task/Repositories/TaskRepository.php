@@ -34,4 +34,9 @@ class TaskRepository implements TaskInterface
         $task = Task::findOrFail($id);
         return $task->delete();
     }
+
+    public function getTaskWithRelations(Task $task): Task
+    {
+        return $task->loadMissing('taskList.board');
+    }
 }
