@@ -15,11 +15,12 @@ use Web\Project\Models\Project;
 use Web\Project\Models\ProjectUser;
 use Web\Task\Models\Task;
 use Web\TaskActivity\Models\TaskActivity;
+use Web\User\Traits\HasEmailChangeConfirmation;
 use Web\User\Traits\HasRolesAndPermissions;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable,HasRolesAndPermissions;
+    use HasApiTokens, HasFactory, Notifiable,HasRolesAndPermissions,HasEmailChangeConfirmation;
 
     /**
      * The attributes that are mass assignable.
@@ -104,5 +105,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return \Web\User\Database\Factories\UserFactory::new();
     }
+
+
 
 }

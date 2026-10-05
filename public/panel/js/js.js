@@ -323,47 +323,98 @@ function registerProfilePasswordConfirmation() {
         e.preventDefault();
 
         $('#passwordModal').show();
-
     });
+
 
     $(document).on('click', '#confirmPasswordBtn', function () {
 
+        const form = $('#profileForm');
+
         $.ajax({
 
-            url: $('#profileForm').data('confirm-url'),
+            url: form.data('confirm-url'),
 
             type: 'POST',
 
             data: {
-
                 current_password: $('#current_password').val(),
-
                 _token: $('meta[name="csrf-token"]').attr('content')
-
             },
 
             success: function () {
 
                 $('#passwordModal').hide();
+                $('#passwordError').text('');
 
-                document.getElementById('profileForm').submit();
+                const email = ($('#email').val() || '').trim();
+                const currentEmail = ($('#originalEmail').val() || '').trim();
 
+
+                // Email has changed
+                if (email !== currentEmail) {
+
+                    $.ajax({
+
+                        url: form.data('email-change-url'),
+
+                        type: 'POST',
+
+                        data: {
+                            email: email,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+
+                        success: function (response) {
+
+                            alert(response.message);
+
+                            // Prevent direct email update
+                            form.find('input[name="email"]')
+                                .removeAttr('name');
+
+                            // Submit the other profile changes
+                            form[0].submit();
+                        },
+
+                        error: function (xhr) {
+
+                            if (
+                                xhr.responseJSON &&
+                                xhr.responseJSON.errors &&
+                                xhr.responseJSON.errors.email
+                            ) {
+
+                                $('#passwordError').text(
+                                    xhr.responseJSON.errors.email[0]
+                                );
+                            }
+                        }
+                    });
+
+                } else {
+
+                    // Email has NOT changed
+                    // Only update normal profile fields
+                    form[0].submit();
+                }
             },
 
             error: function (xhr) {
 
-                $('#passwordError').text(
-                    xhr.responseJSON.errors.current_password[0]
-                );
+                if (
+                    xhr.responseJSON &&
+                    xhr.responseJSON.errors &&
+                    xhr.responseJSON.errors.current_password
+                ) {
 
+                    $('#passwordError').text(
+                        xhr.responseJSON.errors.current_password[0]
+                    );
+                }
             }
-
         });
-
     });
-
 }
-
 $(document).ready(function () {
 
     create_custom_dropdowns();

@@ -2,6 +2,7 @@
 namespace Web\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Web\Core\Console\Commands\EmailChangeConcurrencyWorker;
 use Web\Core\Console\Commands\ModuleMakeCommand;
 use Web\Core\Console\Commands\ModuleMakeMigrationCommand;
 use Web\Core\Console\Commands\ModuleMigrateCommand;
@@ -30,7 +31,7 @@ class CoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
 
             $this->commands([
-
+                EmailChangeConcurrencyWorker::class,
                 ModuleMakeCommand::class,
                 ModuleMakeMigrationCommand::class,
                 ModuleMigrateCommand::class,

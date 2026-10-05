@@ -59,24 +59,16 @@ class UserService
     {
         $user = $this->findById($id);
 
-
         $data = [
             'name' => $request->name,
             'username' => $request->username,
             'mobile' => $request->mobile,
         ];
 
-        if ($user->email != $request->email) {
-            $data['email'] = $request->email;
-            $data['email_verified_at'] = null;
-        }
-
         if (!empty($request->password)) {
             $data['password'] = bcrypt($request->password);
         }
-
         return $this->userRepo->update($user, $data);
-
     }
 
     public function updateUserPhoto($request)

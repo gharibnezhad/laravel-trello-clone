@@ -8,12 +8,14 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Web\RolePermissions\Models\Permission;
+use Web\User\Contracts\EmailChangeRepositoryInterface;
 use Web\User\Contracts\UserInterface;
 use Web\User\Database\Seeder\UserSeeder;
 use Web\User\Http\Middleware\EnsureProfilePasswordConfirmed;
 use Web\User\Http\Middleware\StoreUserIp;
 use Web\User\Models\User;
 use Web\User\Policies\UserPolicy;
+use Web\User\Repositories\EmailChangeRepository;
 use Web\User\Repositories\UserRepository;
 use Web\User\Services\PasswordConfirmationService;
 
@@ -27,6 +29,7 @@ class UserServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views','User');
         $this->app->bind(UserInterface::class,UserRepository::class);
         $this->app->singleton(PasswordConfirmationService::class);
+        $this->app->bind(EmailChangeRepositoryInterface::class,EmailChangeRepository::class);
 
 
         DatabaseSeeder::$seeders[] = UserSeeder::class;

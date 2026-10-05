@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Web\User\Http\Controllers\ProfileController;
 use Web\User\Http\Controllers\UserController;
@@ -21,7 +20,7 @@ use Web\User\Http\Controllers\UserController;
 Route::middleware('web')->group(function () {
 
 
-    Route::middleware(['web','auth','verified'])->group(function () {
+    Route::middleware(['auth','verified'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -38,6 +37,18 @@ Route::middleware('web')->group(function () {
 
 
     });
+
+    // pending email
+    Route::get('/email/approve/{token}', [UserController::class, 'approve'])
+        ->name('email-change.approve');
+    Route::get('/email/confirm/{token}',[UserController::class,'confirm'])
+        ->name('email-change.confirm');
+    Route::get('/email/deny/{token}', [UserController::class, 'deny']
+    )->name('email-change.deny');
+    Route::post('users/profile/{user}/email-change', [UserController::class, 'requestEmailChange']
+    )->name('users.email-change.request');
+
+
 
     Route::get('/dashboard', function () {
         return view('dashboard');

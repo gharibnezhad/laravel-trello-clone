@@ -9,6 +9,7 @@ use Web\User\Http\Requests\ConfirmPasswordRequest;
 use Web\User\Http\Requests\UpdateProfileInformationRequest;
 use Web\User\Http\Requests\UpdateUserPhoto;
 use Web\User\Models\User;
+use Web\User\Services\EmailChangeService;
 use Web\User\Services\PasswordConfirmationService;
 use Web\User\Services\UserService;
 
@@ -17,7 +18,10 @@ class UserController extends Controller
     protected $userService;
     protected $roleRepo;
 
-    public function __construct(UserService $userService,RoleRepository $roleRepo)
+    public function __construct(UserService                  $userService,
+                                RoleRepository               $roleRepo,
+                                protected EmailChangeService $emailChangeService
+    )
     {
         $this->userService = $userService;
         $this->roleRepo = $roleRepo;
@@ -25,30 +29,30 @@ class UserController extends Controller
 
     public function index()
     {
-        $this->authorize('index',User::class);
+        $this->authorize('index', User::class);
         $users = $this->userService->paginate();
-        return view('User::Admin.index',compact('users'));
+        return view('User::Admin.index', compact('users'));
     }
 
     public function edit($id)
     {
-        $this->authorize('edit',User::class);
+        $this->authorize('edit', User::class);
         $user = $this->userService->findById($id);
         $roles = $this->roleRepo->getRole();
 
-        return view('User::Admin.edit',compact('user','roles'));
+        return view('User::Admin.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request,$userid)
+    public function update(Request $request, $userid)
     {
-        $this->authorize('update',User::class);
-        $this->userService->updateUser($request,$userid);
+        $this->authorize('update', User::class);
+        $this->userService->updateUser($request, $userid);
         return redirect()->route('users.index');
     }
 
     public function destroy($id)
     {
-        $this->authorize('delete',User::class);
+        $this->authorize('delete', User::class);
         $this->userService->delete($id);
         return response()->json([
             'status' => 'success',
@@ -58,7 +62,7 @@ class UserController extends Controller
 
     public function manualVerify($id)
     {
-        $this->authorize('manualVerify',User::class);
+        $this->authorize('manualVerify', User::class);
         $this->userService->verifyEmail($id);
         return response()->json([
             'status' => 'success',
@@ -76,25 +80,25 @@ class UserController extends Controller
     public function editProfile($id)
     {
         $user = $this->userService->findById($id);
-        $this->authorize('editProfile',$user);
-        return view('User::Admin.editProfile',compact('user'));
+        $this->authorize('editProfile', $user);
+        return view('User::Admin.editProfile', compact('user'));
     }
 
 
     public function updateProfile(
         UpdateProfileInformationRequest $request,
-        User $user,
-        PasswordConfirmationService $confirmation
+        User                            $user,
+        PasswordConfirmationService     $confirmation
     )
     {
-        $this->authorize('updateProfile',$user);
-       $this->userService->updateProfile($request,$user->id);
+        $this->authorize('updateProfile', $user);
+        $this->userService->updateProfile($request, $user->id);
         $confirmation->forget();
         return redirect()->route('users.profile');
     }
 
     public function confirmPassword(
-        ConfirmPasswordRequest $request,
+        ConfirmPasswordRequest      $request,
         PasswordConfirmationService $confirmation)
     {
         $confirmation->confirm();
@@ -109,5 +113,50 @@ class UserController extends Controller
         $this->userService->updateUserPhoto($request);
         return back();
     }
+
+
+
+    public function requestEmailChange(Request $request, User $user)
+    {
+        $this->authorize('updateProfile', $user);
+        $request->validate([
+            'email' => ['required', 'email', 'different:' . $user->email,],]);
+        $this->emailChangeService->request($user, $request->email);
+        return response()->json([
+            'success' => true,
+            'message' => 'A confirmation link has been sent to your new email address.',
+        ]);
+    }
+
+    public function approve(string $token)
+    {
+        $this->emailChangeService->approve($token);
+
+        return redirect()->route('login')->with('status',
+                'Your email change request has been approved.
+                A confirmation link has been sent to your new email address.');
+    }
+
+
+    public function confirm(string $token)
+    {
+        $emailChange = $this->emailChangeService->confirm($token);
+        return redirect()->route('login')->with('status',
+            'Your email address has been changed successfully.');
+    }
+
+    public function deny(string $token)
+    {
+        $this->emailChangeService->deny($token);
+        return redirect()
+            ->route('users.profile')
+            ->with(
+                'status',
+                'Your email change request has been cancelled.'
+            );
+    }
+
+
+
 
 }
